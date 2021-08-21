@@ -1,6 +1,6 @@
 {
-    "name": "felixdorn/:name",
-    "description": ":description",
+    "name": "felixdorn/structured-time",
+    "description": "structured-time",
     "license": "MIT",
     "authors": [
         {
@@ -13,19 +13,18 @@
     },
     "require-dev": {
         "pestphp/pest": "^v0.3.19",
-        "orchestra/testbench": "^v6.17.1",
         "friendsofphp/php-cs-fixer": "^v3.0.0",
         "phpstan/phpstan": "^0.12.88",
         "symfony/var-dumper": "^5.2.0"
     },
     "autoload": {
         "psr-4": {
-            "Felix\\:namespace\\": "src/"
+            "Felix\\StructuredTime\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Felix\\:namespace\\Tests\\": "tests/"
+            "Felix\\StructuredTime\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "dev",

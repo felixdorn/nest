@@ -1,10 +1,10 @@
-# :name for Laravel                 
+# structured-time for Laravel                 
 
-[![Tests](https://github.com/felixdorn/:name/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/felixdorn/:name/actions/workflows/tests.yml)
-[![Formats](https://github.com/felixdorn/:name/actions/workflows/formats.yml/badge.svg?branch=master)](https://github.com/felixdorn/:name/actions/workflows/formats.yml)
-[![Version](https://poser.pugx.org/felixdorn/:name/version)](//packagist.org/packages/felixdorn/:name)
-[![Total Downloads](https://poser.pugx.org/felixdorn/:name/downloads)](//packagist.org/packages/felixdorn/:name)
-[![License](https://poser.pugx.org/felixdorn/:name/license)](//packagist.org/packages/felixdorn/:name)
+[![Tests](https://github.com/felixdorn/structured-time/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/felixdorn/structured-time/actions/workflows/tests.yml)
+[![Formats](https://github.com/felixdorn/structured-time/actions/workflows/formats.yml/badge.svg?branch=master)](https://github.com/felixdorn/structured-time/actions/workflows/formats.yml)
+[![Version](https://poser.pugx.org/felixdorn/structured-time/version)](//packagist.org/packages/felixdorn/structured-time)
+[![Total Downloads](https://poser.pugx.org/felixdorn/structured-time/downloads)](//packagist.org/packages/felixdorn/structured-time)
+[![License](https://poser.pugx.org/felixdorn/structured-time/license)](//packagist.org/packages/felixdorn/structured-time)
 
 ## Installation
 
@@ -13,7 +13,7 @@
 You can install the package via composer:
 
 ```bash
-composer require felixdorn/:name
+composer require felixdorn/structured-time
 ```
 
 ## Usage
@@ -24,4 +24,4 @@ composer require felixdorn/:name
 composer test
 ```
 
-**:name** was created by **[Félix Dorn](https://twitter.com/afelixdorn)** under the **[MIT license](https://opensource.org/licenses/MIT)**.
+**structured-time** was created by **[Félix Dorn](https://twitter.com/afelixdorn)** under the **[MIT license](https://opensource.org/licenses/MIT)**.
