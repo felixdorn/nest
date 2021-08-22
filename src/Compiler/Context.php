@@ -1,8 +1,8 @@
 <?php
 
-namespace Felix\StructuredTime\Compiler;
+namespace Felix\Nest\Compiler;
 
-use Felix\StructuredTime\Concerns\HandlesTokenization;
+use Felix\Nest\Concerns\HandlesTokenization;
 
 class Context
 {

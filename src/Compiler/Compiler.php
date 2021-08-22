@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\StructuredTime\Compiler;
+namespace Felix\Nest\Compiler;
 
 class Compiler
 {

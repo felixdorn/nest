@@ -1,6 +1,6 @@
 <?php
 
-use Felix\StructuredTime\Compiler\Tokenizer;
+use Felix\Nest\Compiler\Tokenizer;
 use function Spatie\PestPluginTestTime\testTime;
 
 beforeEach(function () {

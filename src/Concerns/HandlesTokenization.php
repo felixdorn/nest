@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\StructuredTime\Concerns;
+namespace Felix\Nest\Concerns;
 
 trait HandlesTokenization
 {

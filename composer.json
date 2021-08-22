@@ -1,6 +1,6 @@
 {
-    "name": "felixdorn/structured-time",
-    "description": "structured-time",
+    "name": "felixdorn/nest",
+    "description": "Nest is a simple pseudo-programming language for defining repeatable and non-repeatable events in time.",
     "license": "MIT",
     "authors": [
         {
@@ -10,23 +10,23 @@
     ],
     "require": {
         "php": "^8.0",
-        "nesbot/carbon": "^2.52",
-        "spatie/pest-plugin-test-time": "^1.0"
+        "nesbot/carbon": "^2.52"
     },
     "require-dev": {
         "pestphp/pest": "^v1.16.0",
         "friendsofphp/php-cs-fixer": "^v3.0.0",
         "phpstan/phpstan": "^0.12.88",
-        "symfony/var-dumper": "^5.2.0"
+        "symfony/var-dumper": "^5.2.0",
+        "spatie/pest-plugin-test-time": "^1.0"
     },
     "autoload": {
         "psr-4": {
-            "Felix\\StructuredTime\\": "src/"
+            "Felix\\Nest\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Felix\\StructuredTime\\Tests\\": "tests/"
+            "Felix\\Nest\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "dev",

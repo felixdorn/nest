@@ -1,13 +1,11 @@
 <?php
 
-namespace Felix\StructuredTime\Concerns;
+namespace Felix\Nest\Concerns;
 
-
-use Felix\StructuredTime\Exceptions\CompilerException;
+use Felix\Nest\Exceptions\CompilerException;
 
 trait HandlesErrors
 {
-
     public function errorIf(bool $condition, string $message, ...$bindings): void
     {
         if ($condition) {

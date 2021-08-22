@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\StructuredTime\Compiler;
+namespace Felix\Nest\Compiler;
 
 class Preprocessor
 {
@@ -18,6 +18,7 @@ class Preprocessor
         if ($this->lookBehind($elements, $index) === 'at') {
             if (strlen($element) === 1) {
                 $element .= ':00pm';
+
                 return;
             }
 
@@ -29,6 +30,7 @@ class Preprocessor
 
             if (preg_match('/^[0-9]:[0-9]{1,2}$/', $element)) {
                 $element .= 'pm';
+
                 return;
             }
         }

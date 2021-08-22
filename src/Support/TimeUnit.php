@@ -1,8 +1,8 @@
 <?php
 
-namespace Felix\StructuredTime\Support;
+namespace Felix\Nest\Support;
 
-use Felix\StructuredTime\Exceptions\InvalidTimeUnitException;
+use Felix\Nest\Exceptions\InvalidTimeUnitException;
 
 class TimeUnit
 {

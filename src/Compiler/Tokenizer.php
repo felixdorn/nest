@@ -1,11 +1,11 @@
 <?php
 
-namespace Felix\StructuredTime\Compiler;
+namespace Felix\Nest\Compiler;
 
 use Carbon\Carbon;
-use Felix\StructuredTime\Concerns\HandlesErrors;
-use Felix\StructuredTime\Concerns\HandlesTypes;
-use Felix\StructuredTime\Support\TimeUnit;
+use Felix\Nest\Concerns\HandlesErrors;
+use Felix\Nest\Concerns\HandlesTypes;
+use Felix\Nest\Support\TimeUnit;
 
 class Tokenizer
 {
@@ -50,7 +50,6 @@ class Tokenizer
                 $token['when'] = array_keys($this->weekDays);
                 continue;
             }
-
 
             if ($keyword === 'between') {
                 $startsAt = $context->takeUntilSequence(' and');

@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\StructuredTime\Exceptions;
+namespace Felix\Nest\Exceptions;
 
 use Exception;
 

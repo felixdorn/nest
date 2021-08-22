@@ -1,9 +1,9 @@
 <?php
 
-namespace Felix\StructuredTime\Concerns;
+namespace Felix\Nest\Concerns;
 
-use Felix\StructuredTime\Exceptions\InvalidTimeUnitException;
-use Felix\StructuredTime\Support\TimeUnit;
+use Felix\Nest\Exceptions\InvalidTimeUnitException;
+use Felix\Nest\Support\TimeUnit;
 
 trait HandlesTypes
 {
