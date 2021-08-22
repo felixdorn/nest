@@ -10,7 +10,8 @@
     ],
     "require": {
         "php": "^8.0",
-        "nesbot/carbon": "^2.52"
+        "nesbot/carbon": "^2.52",
+        "spatie/pest-plugin-test-time": "^1.0"
     },
     "require-dev": {
         "pestphp/pest": "^v1.16.0",

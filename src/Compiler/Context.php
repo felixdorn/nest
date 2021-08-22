@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\StructuredTime;
+namespace Felix\StructuredTime\Compiler;
 
 use Felix\StructuredTime\Concerns\HandlesTokenization;
 
@@ -47,5 +47,15 @@ class Context
     public function lookAhead(int $n = 1): ?string
     {
         return $this->code[$this->cursor + $n] ?? null;
+    }
+
+    public function __toString(): string
+    {
+        return $this->code;
+    }
+
+    public function toString(): string
+    {
+        return (string) $this;
     }
 }

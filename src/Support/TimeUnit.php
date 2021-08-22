@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\StructuredTime;
+namespace Felix\StructuredTime\Support;
 
 use Felix\StructuredTime\Exceptions\InvalidTimeUnitException;
 

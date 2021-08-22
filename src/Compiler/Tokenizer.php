@@ -1,10 +1,11 @@
 <?php
 
-namespace Felix\StructuredTime;
+namespace Felix\StructuredTime\Compiler;
 
 use Carbon\Carbon;
 use Felix\StructuredTime\Concerns\HandlesErrors;
 use Felix\StructuredTime\Concerns\HandlesTypes;
+use Felix\StructuredTime\Support\TimeUnit;
 
 class Tokenizer
 {
@@ -34,7 +35,6 @@ class Tokenizer
             $keyword = $context->takeUntilChar(' ');
 
             if ($keyword === 'every') {
-                // TODO: Support for "monday and sunday", "monday, sunday"
                 $rawWeekDays = $context->takeUntilSequence([' every ', ' for ', ' between ', ' until ', ' at ']);
                 $weekDays    = $this->explodeNaturalList($rawWeekDays);
 
@@ -42,10 +42,15 @@ class Tokenizer
                     $this->errorUnless($this->isWeekday($weekDay), 'every must be followed by a weekday, "%s" given', $weekDay);
                 }
 
-                // TODO: Support for "monday and sunday", "monday, sunday"
                 $token['when'] = $weekDays;
                 continue;
             }
+
+            if ($keyword === 'everyday') {
+                $token['when'] = array_keys($this->weekDays);
+                continue;
+            }
+
 
             if ($keyword === 'between') {
                 $startsAt = $context->takeUntilSequence(' and');
@@ -94,8 +99,6 @@ class Tokenizer
 
             $this->error('unexpected token "%s"', $keyword);
         }
-
-        dd($token);
 
         return $token;
     }
