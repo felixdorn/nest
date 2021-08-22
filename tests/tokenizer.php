@@ -1,12 +1,5 @@
 <?php
 
-use Felix\Nest\Compiler\Tokenizer;
-use function Spatie\PestPluginTestTime\testTime;
-
-beforeEach(function () {
-    $this->tokenizer = new Tokenizer();
-    testTime()->freeze('2021-01-01 12:00:00');
-});
 
 //it('compiles', function () {
 //    expect($this->tokenizer->tokenize('for 1 hour at 3:30PM every monday, sunday,saturday and tuesday until 01/02/2021')['when'])->toBe([

@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Felix\Nest\Preprocessor;
 
 dataset('processed', [
@@ -22,7 +23,7 @@ dataset('processed', [
 ]);
 
 it('processes correctly', function (string $current, string $processed) {
-    $code = (new Preprocessor($current))->preprocess();
+    $code = (new Preprocessor())->preprocess($current, Carbon::now());
 
     expect($code->getSymbol(0))->toBe($processed);
 })->with('processed');

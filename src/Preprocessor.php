@@ -2,30 +2,32 @@
 
 namespace Felix\Nest;
 
+use Carbon\CarbonInterface;
+
 class Preprocessor
 {
-    protected array $code;
     protected array $symbols = [];
 
-    public function __construct(string $code)
+    public function __construct()
     {
-        $this->code = explode(' ', strtolower($code));
     }
 
-    public function preprocess(): Code
+    public function preprocess(string $code, CarbonInterface $current): Code
     {
-        foreach ($this->code as $k => $element) {
-            $this->code[$k] = $this->extractDates($element);
-            $this->code[$k] = $this->extractTime($this->code[$k]);
+        $elements = explode(' ', strtolower($code));
+
+        foreach ($elements as $k => $element) {
+            $elements[$k] = $this->extractDates($element, $current);
+            $elements[$k] = $this->extractTime($elements[$k]);
         }
 
         return new Code(
-            implode(' ', $this->code),
+            implode(' ', $elements),
             $this->symbols
         );
     }
 
-    protected function extractDates(string $element): string
+    protected function extractDates(string $element, CarbonInterface $current): string
     {
         preg_match('/^\d{1,2}\/\d{1,2}\/\d{1,4}$/', $element, $matches);
 
@@ -40,13 +42,11 @@ class Preprocessor
         $day   = str_pad($day, 2, '0', STR_PAD_LEFT);
 
         if (strlen($year) === 2) {
-            // TODO: Here get the current century from a global context
-            $year = '20' . $year;
+            $year = ($current->millennium - 1) . '0' . $year;
         }
 
         if (strlen($year) === 1) {
-            // TODO: Here get the current century from a global context
-            $year = '200' . $year;
+            $year = ($current->millennium - 1) . '00' . $year;
         }
 
         $this->symbols[] = sprintf('%s/%s/%s', $month, $day, $year);
