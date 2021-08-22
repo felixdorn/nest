@@ -164,3 +164,9 @@ at 6 => at 6:00PM
 ```
 12PM => 12:00 (in 24-hour format)
 ```
+
+## Future Scope
+
+Here's a list of things that are currently not supported but might be in the future.
+
+* 24-hour format support
