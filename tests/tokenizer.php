@@ -1,6 +1,5 @@
 <?php
 
-
 //it('compiles', function () {
 //    expect($this->tokenizer->tokenize('for 1 hour at 3:30PM every monday, sunday,saturday and tuesday until 01/02/2021')['when'])->toBe([
 //        'monday', 'sunday', 'saturday', 'tuesday',
