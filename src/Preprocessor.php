@@ -17,7 +17,6 @@ class Preprocessor
         foreach ($this->code as $k => $element) {
             $this->code[$k] = $this->extractDates($element);
             $this->code[$k] = $this->extractTime($this->code[$k]);
-            $this->code[$k] = $this->extractLiteralTime($this->code[$k], $k);
         }
 
         return new Code(
@@ -96,7 +95,7 @@ class Preprocessor
 
         // 12am becomes 12:00am
         $time              = preg_replace('/^(\d{1,2})$/', '$1:00', $time);
-        [$hours, $minutes] = explode(':', $time);
+        [$hours, $minutes] = explode(':', $time ?? ':');
 
         $hours   = str_pad($hours, 2, '0', STR_PAD_LEFT);
         $minutes = str_pad($minutes, 2, '0', STR_PAD_LEFT);
