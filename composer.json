@@ -9,10 +9,11 @@
         }
     ],
     "require": {
-        "php": "^8.0"
+        "php": "^8.0",
+        "nesbot/carbon": "^2.52"
     },
     "require-dev": {
-        "pestphp/pest": "^v0.3.19",
+        "pestphp/pest": "^v1.16.0",
         "friendsofphp/php-cs-fixer": "^v3.0.0",
         "phpstan/phpstan": "^0.12.88",
         "symfony/var-dumper": "^5.2.0"
