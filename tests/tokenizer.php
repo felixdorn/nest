@@ -12,6 +12,8 @@
 //        ],
 //    ]);
 //
+//    expect($this->tokenizer->tokenize('everyday for half an hour'))->toBe([]);
+
 //    expect($this->tokenizer->tokenize('everyday for 1 hour'))->toBe([
 //        'constraints' => [
 //            'duration' => 3600.0,

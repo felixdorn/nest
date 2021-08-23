@@ -5,20 +5,20 @@ Nest is a simple pseudo-programming language for defining repeatable and non-rep
 Here are a couple examples of the syntax:
 
 ```
-"brush my teeth" everyday at 7am for 3 minutes
-"dentist and chill" tomorrow at 5:30PM for an hour
+"brush my teeth" everyday at 7:00 for 3 minutes
+"dentist and chill" tomorrow at 17:30 for an hour
 "workout" every monday, saturday and sunday at 2 for 1h until 15/6/2021
 ```
 
 Nest outputs a list of time periods with their labels.
 
-Here's an example output for `"something" once 1/1/2021 from 3PM to 4PM`:
+Here's an example output for `"something" once 1/1/2021 from 15:00 to 16:00`:
 
 ```json
 {
     "label": "something",
     "occurrences": {
-        "01/01/2021 03:00PM": "01/01/2020 04:00PM"
+        "01/01/2021 15:00": "01/01/2020 16:00"
     }
 }
 ```
@@ -86,7 +86,7 @@ If you wish to constrain an event between a time range, use [from](#from--to-).
 From constrains the event between a time range.
 
 ```
-from 11PM to 12:05PM
+from 22:00 to 23:05
 ```
 
 ## Until
@@ -109,11 +109,11 @@ at 6 for an hour
 
 ## Lists
 
-A list contains one or many literals such as `monday` or `1:00AM` and these are seperated with commas or the word `and`.
+A list contains one or many literals such as `monday` or `1:00` and these are seperated with commas or the word `and`.
 
 ```
 monday, saturday and sunday
-1:00AM,4:00PM
+1:00,16:00
 tuesday and sunday, monday
 monday, saturday, sunday
 ```
@@ -147,26 +147,4 @@ You can **not** do math and write things such as `for 5 + 2 minutes`.
 
 ### Implicit Time Quantification
 
-When no period is explicitly given, Nest will always use PM.
-
-```
-at 6 => at 6:00PM
-```
-
-12AM will be interpreted midnight.
-
-```
-12AM => 00:00 (in 24-hour format)
-```
-
-12PM will be interpreted as noon.
-
-```
-12PM => 12:00 (in 24-hour format)
-```
-
-## Future Scope
-
-Here's a list of things that are currently not supported but might be in the future.
-
-* 24-hour format support
+There is no more implicit time quantification thanks to the 24-hour format as a (sensible) default. 

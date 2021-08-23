@@ -3,6 +3,7 @@
 namespace Felix\Nest;
 
 use Carbon\CarbonInterface;
+use Exception;
 
 class Preprocessor
 {
@@ -14,11 +15,17 @@ class Preprocessor
 
     public function preprocess(string $code, CarbonInterface $current): Code
     {
+        if (str_contains($code, '$')) {
+            // TODO: Yeah, make that better.
+            throw new Exception('compile error: code can not contain $ signs.');
+        }
+
         $elements = explode(' ', strtolower($code));
 
         foreach ($elements as $k => $element) {
             $elements[$k] = $this->extractDates($element, $current);
             $elements[$k] = $this->extractTime($elements[$k]);
+            $elements[$k] = $this->expandShorthands($elements[$k]);
         }
 
         return new Code(
@@ -56,52 +63,35 @@ class Preprocessor
 
     protected function extractTime(string $element): string
     {
-        preg_match_all('/^\d{1,2}(:\d{1,2}|)(am|pm|)$/', $element, $matches);
+        preg_match('/^\d{1,2}(:\d{1,2}|)$/', $element, $matches);
 
-        if (count($matches[0]) === 0) {
+        if (count($matches) === 0) {
             return $element;
         }
 
-        $time = $matches[0][0];
-
-        if (!str_ends_with($time, 'am') && !str_ends_with($time, 'pm')) {
-            $time .= 'pm';
+        if (!str_contains($element, ':')) {
+            $element .= ':00';
         }
 
-        $period = $time[-2] . 'm';
-        $time   = substr($time, 0, -2);
+        [$hours, $minutes] = explode(':', $element);
+        $hours             = str_pad($hours, 2, '0', STR_PAD_LEFT);
+        $minutes           = str_pad($minutes, 2, '0', STR_PAD_LEFT);
 
-        $time = ltrim($time, '0');
-
-        // Time was "0"
-        if ($time === '') {
-            $time = '00:00';
-        }
-
-        // Time was 0AM/PM
-        if ($time === 'am' || $time === 'pm') {
-            $time = '00:00';
-        }
-
-        // Time was "00:x"
-        if (str_starts_with($time, ':')) {
-            $time = '00' . $time;
-        }
-
-        // Time was "x:00"
-        if (str_ends_with($time, ':')) {
-            $time .= '00';
-        }
-
-        // 12am becomes 12:00am
-        $time              = preg_replace('/^(\d{1,2})$/', '$1:00', $time);
-        [$hours, $minutes] = explode(':', $time ?? ':');
-
-        $hours   = str_pad($hours, 2, '0', STR_PAD_LEFT);
-        $minutes = str_pad($minutes, 2, '0', STR_PAD_LEFT);
-
-        $this->symbols[] = $hours . ':' . $minutes . $period;
+        $this->symbols[] = $hours . ':' . $minutes;
 
         return '$' . array_key_last($this->symbols);
+    }
+
+    protected function expandShorthands(string $element): string
+    {
+        if ($element === 'everyday') {
+            return 'every monday, tuesday, wednesday, thursday, friday, saturday, sunday';
+        }
+
+        if ($element === 'an' || $element === 'a') {
+            return '1';
+        }
+
+        return $element;
     }
 }
