@@ -6,6 +6,9 @@ use Felix\Nest\Preprocessor;
 use Felix\Nest\Support\TimeUnit;
 
 dataset('compilations', [
+//    ['for half an hour', [
+//        'duration' => TimeUnit::HOUR / 2,
+//    ]],
     ['every monday from 12:15AM to 4PM', [
         'when'     => ['monday'],
         'at'       => '00:15',
@@ -31,6 +34,24 @@ dataset('compilations', [
     ['for two minutes', [
         'duration' => 2 * TimeUnit::MINUTE,
     ]],
+    ['for 1 hour at 3:30PM every monday, sunday,saturday and tuesday until 01/02/2021', [
+        'duration'  => TimeUnit::HOUR,
+        'at'        => '15:30',
+        'when'      => ['monday', 'sunday', 'saturday', 'tuesday'],
+        'starts_at' => 'now', // TODO: Eww
+        'ends_at'   => '01/02/2021',
+    ]],
+    ['for three hours at 6:30PM', [
+        'duration' => 3 * TimeUnit::HOUR,
+        'at'       => '18:30',
+    ]],
+    ['between 17/04/2022 and 19/07/2022 every monday at 3:00PM for 1 hour', [
+        'starts_at' => '17/04/2022',
+        'ends_at'   => '19/07/2022',
+        'when'      => ['monday'],
+        'at'        => '15:00',
+        'duration'  => TimeUnit::HOUR,
+    ]],
 ]);
 
 beforeEach(function () {
@@ -39,6 +60,8 @@ beforeEach(function () {
 });
 
 it('compiles', function (string $code, array $expectedEvent) {
+    Carbon::setTestNow('2021/01/01 00:00:00');
+
     $event = $this->lexer->tokenize(
         $this->preprocessor->preprocess($code, Carbon::now())
     );

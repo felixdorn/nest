@@ -70,10 +70,6 @@ class Preprocessor
         'sixty'        => 60,
     ];
 
-    public function __construct()
-    {
-    }
-
     public function preprocess(string $code, CarbonInterface $current): string
     {
         if (str_contains($code, '$')) {
@@ -81,7 +77,7 @@ class Preprocessor
             throw new Exception('compile error: code can not contain $ signs.');
         }
 
-        $elements = explode(' ', strtolower($code));
+        $elements = explode(' ', strtolower(trim($code)));
 
         foreach ($elements as $k => $element) {
             $elements[$k] = $this->extractDates($element, $current);

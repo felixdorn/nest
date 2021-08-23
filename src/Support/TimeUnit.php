@@ -24,21 +24,17 @@ class TimeUnit
         'hours'   => self::HOUR,
         'days'    => self::DAY,
         'weeks'   => self::WEEK,
-    ];
 
-    public const ABBREVIATIONS = [
-        's' => self::NAMES['second'],
-        'm' => self::NAMES['minute'],
-        'h' => self::NAMES['hour'],
-        'd' => self::NAMES['day'],
-        'w' => self::NAMES['week'],
+        's' => self::SECOND,
+        'm' => self::MINUTE,
+        'h' => self::HOUR,
+        'd' => self::DAY,
+        'w' => self::WEEK,
     ];
 
     public static function convert(string $unit): int
     {
-        return self::NAMES[$unit] ??
-            self::ABBREVIATIONS[$unit] ??
-            // TODO: custom exception
-            throw new Exception('invalid time unit: ' . $unit);
+        // TODO: custom exception
+        return self::NAMES[$unit] ?? throw new Exception('invalid time unit: ' . $unit);
     }
 }

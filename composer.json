@@ -16,8 +16,7 @@
         "pestphp/pest": "^v1.16.0",
         "friendsofphp/php-cs-fixer": "^v3.0.0",
         "phpstan/phpstan": "^0.12.88",
-        "symfony/var-dumper": "^5.2.0",
-        "spatie/pest-plugin-test-time": "^1.0"
+        "symfony/var-dumper": "^5.2.0"
     },
     "autoload": {
         "psr-4": {

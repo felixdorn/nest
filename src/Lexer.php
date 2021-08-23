@@ -28,7 +28,8 @@ class Lexer
             if ($keyword === 'until') {
                 $ends = $walker->takeUntil(' ');
 
-                $token['ends_at'] = $ends;
+                $event['starts_at'] = 'now';
+                $event['ends_at']   = $ends;
                 continue;
             }
 
@@ -47,8 +48,10 @@ class Lexer
 
             if ($keyword === 'for') {
                 // TODO: Plural and shorthands (like: 1min, 2h) + should not be hardcoded
-                $measure = $walker->takeUntilSequence([' minute', ' hour', ' day', ' week']);
-                $unit    = $walker->takeUntil(' ');
+                $measure = $walker->takeUntilSequence(array_map(function ($unit) {
+                    return ' ' . $unit;
+                }, array_keys(TimeUnit::NAMES)));
+                $unit = $walker->takeUntil(' ');
 
                 $event['duration'] = (int) $measure * TimeUnit::convert($unit);
                 continue;
