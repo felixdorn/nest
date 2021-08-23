@@ -52,6 +52,16 @@ dataset('compilations', [
         'at'        => '15:00',
         'duration'  => TimeUnit::HOUR,
     ]],
+    ['once 1/1/2021 from 15:00 to 16:00', [
+        'when'     => '01/01/2021',
+        'at'       => '15:00',
+        'duration' => TimeUnit::HOUR,
+    ]],
+    ['12/08/2021 for 2 minutes at 21:30', [
+        'when'     => '12/08/2021',
+        'duration' => 2 * TimeUnit::MINUTE,
+        'at'       => '21:30',
+    ]],
 ]);
 
 beforeEach(function () {

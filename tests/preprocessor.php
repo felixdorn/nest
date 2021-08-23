@@ -32,6 +32,6 @@ beforeEach(function () {
     $this->preprocessor = new Preprocessor();
 });
 
-it('processes everything correctly', function (string $code, string $result) {
+it('processes', function (string $code, string $result) {
     expect($this->preprocessor->preprocess($code, Carbon::now()))->toBe($result);
 })->with('processed');

@@ -16,6 +16,11 @@ class Lexer
         while (!$walker->eof()) {
             $keyword = $walker->takeUntil(' ');
 
+            if (preg_match('/[0-9]{2}\/[0-9]{2}\/[0-9]{2}/', $keyword)) {
+                $event['when'] = $keyword;
+                continue;
+            }
+
             if ($keyword === 'every') {
                 $weekDays = $this->parseList(
                     $walker->takeUntilSequence([' every ', ' for ', ' between ', ' until ', ' at ', ' from ']) // TODO: Should not be hard coded
@@ -58,9 +63,7 @@ class Lexer
             }
 
             if ($keyword === 'at') {
-                $time = $walker->takeUntil(' ');
-
-                $event['at'] = $time;
+                $event['at'] = $walker->takeUntil(' ');
                 continue;
             }
 
@@ -73,6 +76,11 @@ class Lexer
 
                 $event['at']       = $start;
                 $event['duration'] = $this->diffInSeconds(new DateTime($start), new DateTime($end));
+            }
+
+            if ($keyword === 'once') {
+                $event['when'] = $walker->takeUntil(' ');
+                continue;
             }
 
             $walker->next();

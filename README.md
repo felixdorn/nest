@@ -1,3 +1,9 @@
+# TODO
+
+* labels
+* non-repeatable events (once keyword, and implicit once keyword)
+* generator
+
 # Nest
 
 Nest is a simple pseudo-programming language for defining repeatable and non-repeatable events in time.
