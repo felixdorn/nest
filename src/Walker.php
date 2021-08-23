@@ -8,10 +8,10 @@ class Walker
     protected int $length;
     protected int $cursor;
 
-    public function __construct(Code $code)
+    public function __construct(string $code)
     {
-        $this->code   = (string) $code;
-        $this->length = strlen($this->code);
+        $this->code   = $code;
+        $this->length = strlen($code);
         $this->cursor = 0;
     }
 

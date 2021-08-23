@@ -2,16 +2,16 @@
 
 namespace Felix\Nest;
 
-use Carbon\Carbon;
-use Carbon\CarbonPeriod;
+use DateTime;
+use DateTimeInterface;
 use Felix\Nest\Support\TimeUnit;
 
 class Lexer
 {
-    public function tokenize(Code $code): array
+    public function tokenize(string $code): array
     {
         $walker = new Walker($code);
-        $event = ['symbols' => $code->getSymbols()];
+        $event  = [];
 
         while (!$walker->eof()) {
             $keyword = $walker->takeUntil(' ');
@@ -41,16 +41,16 @@ class Lexer
                 $endsAt = $walker->takeUntil(' ');
 
                 $event['starts_at'] = $startsAt;
-                $event['ends_at'] = $endsAt;
+                $event['ends_at']   = $endsAt;
                 continue;
             }
 
             if ($keyword === 'for') {
                 // TODO: Plural and shorthands (like: 1min, 2h) + should not be hardcoded
                 $measure = $walker->takeUntilSequence([' minute', ' hour', ' day', ' week']);
-                $unit = $walker->takeUntil(' ');
+                $unit    = $walker->takeUntil(' ');
 
-                $event['duration'] = (float)$measure * TimeUnit::convert($unit);
+                $event['duration'] = (int) $measure * TimeUnit::convert($unit);
                 continue;
             }
 
@@ -62,20 +62,14 @@ class Lexer
             }
 
             if ($keyword === 'from') {
-                $startSymbol = $walker->takeUntilSequence([' to']);
-                $start = $code->getSymbol($startSymbol);
+                $start = $walker->takeUntilSequence([' to']);
 
                 // We skip the " to"
                 $walker->next(3);
-                $endSymbol = $walker->takeUntilSequence([' every ', ' for ', ' between ', ' until ', ' at ', ' from ']); // TODO: Should not be hard coded
-                $end = $code->getSymbol($endSymbol);
+                $end = $walker->takeUntilSequence([' every ', ' for ', ' between ', ' until ', ' at ', ' from ']); // TODO: Should not be hard coded
 
-                $period = CarbonPeriod::create(
-                    Carbon::parse('2000-01-01 ' . $start),
-                    Carbon::parse('2000-01-01 ' . $end)
-                );
-                dd($period);
-                dd($start, $end);
+                $event['at']       = $start;
+                $event['duration'] = $this->diffInSeconds(new DateTime($start), new DateTime($end));
             }
 
             $walker->next();
@@ -91,10 +85,21 @@ class Lexer
             // Flattens the array as it is at most two levels deep.
             array_merge(
                 ...array_map(
-                    static fn(string $item) => explode('and', $item),
+                    static fn (string $item) => explode('and', $item),
                     explode(',', $list)
                 )
             )
         );
+    }
+
+    protected function diffInSeconds(DateTimeInterface $start, DateTimeInterface $end): int
+    {
+        $diff = $end->diff($start);
+
+        $daysInSecs    = ((int) $diff->format('%r%a')) * 24 * 60 * 60;
+        $hoursInSecs   = $diff->h * 60 * 60;
+        $minutesInSecs = $diff->i * 60;
+
+        return $daysInSecs + $hoursInSecs + $minutesInSecs + $diff->s;
     }
 }

@@ -7,13 +7,11 @@ use Exception;
 
 class Preprocessor
 {
-    protected array $symbols = [];
-
     public function __construct()
     {
     }
 
-    public function preprocess(string $code, CarbonInterface $current): Code
+    public function preprocess(string $code, CarbonInterface $current): string
     {
         if (str_contains($code, '$')) {
             // TODO: Yeah, make that better.
@@ -28,10 +26,7 @@ class Preprocessor
             $elements[$k] = $this->expandShorthands($elements[$k]);
         }
 
-        return new Code(
-            implode(' ', $elements),
-            $this->symbols
-        );
+        return implode(' ', $elements);
     }
 
     protected function extractDates(string $element, CarbonInterface $current): string
@@ -56,17 +51,22 @@ class Preprocessor
             $year = ($current->millennium - 1) . '00' . $year;
         }
 
-        $this->symbols[] = sprintf('%s/%s/%s', $month, $day, $year);
-
-        return '$' . array_key_last($this->symbols);
+        return sprintf('%s/%s/%s', $month, $day, $year);
     }
 
     protected function extractTime(string $element): string
     {
-        preg_match('/^\d{1,2}(:\d{1,2}|)$/', $element, $matches);
+        preg_match('/^\d{1,2}(:\d{1,2}|)(am|pm|)$/', $element, $matches);
 
         if (count($matches) === 0) {
             return $element;
+        }
+
+        $format = $matches[2];
+
+        // Time is 12-hour format
+        if ($format !== '') {
+            $element = substr($element, 0, -2); // removes the AM/PM
         }
 
         if (!str_contains($element, ':')) {
@@ -77,9 +77,16 @@ class Preprocessor
         $hours             = str_pad($hours, 2, '0', STR_PAD_LEFT);
         $minutes           = str_pad($minutes, 2, '0', STR_PAD_LEFT);
 
-        $this->symbols[] = $hours . ':' . $minutes;
+        // Time is in 12-hour format
+        if ($format !== '' && $hours === '12') {
+            $hours = '00';
+        }
 
-        return '$' . array_key_last($this->symbols);
+        if ($format === 'pm') {
+            $hours = (int) $hours + 12;
+        }
+
+        return $hours . ':' . $minutes;
     }
 
     protected function expandShorthands(string $element): string
