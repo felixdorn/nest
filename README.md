@@ -42,6 +42,12 @@ every monday and saturday
 
 See how lists work [here](#lists).
 
+You may use the shorthand `everyday` that transpiles to every day of the week
+
+```
+everyday at 6:30
+```
+
 ### For
 
 For indicates for how long an event lasts.
@@ -63,7 +69,7 @@ You may pluralize them to keep the sentence grammatically correct but the compil
 
 Shorthands such as `1h` (1 hour) are also allowed.
 
-Here's a guide on all available shorthands:
+Here's a list of all available shorthands:
 
 * m: minute
 * min: minute
@@ -144,7 +150,3 @@ for a day
 > The compiler doesn't make a difference if you write `a` or `an` so `for a hour` still represents `1 hour` even though it is grammatically incorrect.
 
 You can **not** do math and write things such as `for 5 + 2 minutes`.
-
-### Implicit Time Quantification
-
-There is no more implicit time quantification thanks to the 24-hour format as a (sensible) default. 
