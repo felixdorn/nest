@@ -6,7 +6,7 @@ use Carbon\CarbonInterface;
 
 class Preprocessor
 {
-    public array $numbers = [
+    protected array $numbers = [
         'one'          => 1,
         'two'          => 2,
         'three'        => 3,
@@ -71,8 +71,6 @@ class Preprocessor
 
     public function preprocess(string $code, CarbonInterface $current): string
     {
-        $label = '';
-
         $elements = explode(' ', trim($code));
 
         foreach ($elements as $k => $element) {

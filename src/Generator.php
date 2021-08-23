@@ -2,10 +2,16 @@
 
 namespace Felix\Nest;
 
+use Carbon\CarbonInterface;
+
 class Generator
 {
-    public function generate(array $tree): array
+    public function generate(array $event, CarbonInterface $current): array
     {
-        return [];
+        return [
+            'label'       => $event['label'] ?? '',
+            'now'         => $current->toDateTimeString(),
+            'occurrences' => [],
+        ];
     }
 }
