@@ -1,11 +1,8 @@
-# TODO
-
-* [ ] labels
-* [x] non-repeatable events (once keyword, and implicit once keyword)
-* [ ] generator
-* [ ] error reporting (for humans)
-
 # Nest
+
+[![Tests](https://github.com/felixdorn/nest/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/felixdorn/nest/actions/workflows/tests.yml)
+[![Formats](https://github.com/felixdorn/nest/actions/workflows/formats.yml/badge.svg?branch=master)](https://github.com/felixdorn/nest/actions/workflows/formats.yml)
+[![License](https://poser.pugx.org/felixdorn/nest/license)](//packagist.org/packages/felixdorn/nest)
 
 Nest is a simple pseudo-programming language for defining repeatable and non-repeatable events in time.
 
@@ -13,7 +10,13 @@ Here are a couple examples of the syntax:
 
 ```
 "brush my teeth" everyday at 7:00 for 3 minutes
+```
+
+```
 "dentist and chill" tomorrow at 17:30 for an hour
+```
+
+```
 "workout" every monday, saturday and sunday at 2 for 1h until 15/6/2021
 ```
 
@@ -21,14 +24,22 @@ Nest outputs a list of time periods with their labels.
 
 Here's an example output for `"something" once 1/1/2021 from 15:00 to 16:00`:
 
-```json
-{
-    "label": "something",
-    "occurrences": {
-        "01/01/2021 15:00": "01/01/2020 16:00"
-    }
-}
+```php
+[
+    "label"       => "something",
+    "now"         => "2021-01-01 00:00:00",
+    "occurrences" => [
+        "2021-01-01 15:00:00" => "2021-01-01 16:00:00"
+    ]
+]
 ```
+
+## Features
+
+* Natural syntax
+* Labeling
+* Error reporting for non-developers
+* Fast (enough)
 
 ## Reproducibility
 
@@ -129,7 +140,7 @@ monday, saturday and sunday
 1:00,16:00
 tuesday and sunday, monday
 monday, saturday, sunday
-```
+``` 
 
 ## Quantifying Time
 
