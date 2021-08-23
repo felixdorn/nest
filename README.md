@@ -126,7 +126,7 @@ monday, saturday, sunday
 
 ## Quantifying Time
 
-You can use any number from `one` to a `hundred` in literal form.
+You can use any number from `one` to a `sixty` in literal form.
 
 ```
 for fifty-five minutes
