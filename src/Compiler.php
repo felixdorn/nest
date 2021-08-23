@@ -8,9 +8,7 @@ class Compiler
 {
     protected Preprocessor $preprocessor;
     protected Lexer $lexer;
-    protected SyntaxAnalyzer $syntaxAnalyzer;
     protected SemanticAnalyzer $semanticAnalyzer;
-    protected IntermediateCodeGenerator $intermediateCodeGenerator;
     protected Generator $generator;
 
     public function __construct()

@@ -16,7 +16,7 @@ class Lexer
         while (!$walker->eof()) {
             $keyword = $walker->takeUntil(' ');
 
-            if (preg_match('/[0-9]{2}\/[0-9]{2}\/[0-9]{2}/', $keyword)) {
+            if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $keyword)) {
                 $event['when'] = $keyword;
                 continue;
             }
