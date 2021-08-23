@@ -2,7 +2,7 @@
 
 namespace Felix\Nest\Support;
 
-use Exception;
+use Felix\Nest\Exceptions\InvalidTimeUnitException;
 
 class TimeUnit
 {
@@ -13,6 +13,12 @@ class TimeUnit
     public const WEEK   = self::DAY * 7;
 
     public const NAMES = [
+        's' => self::SECOND,
+        'm' => self::MINUTE,
+        'h' => self::HOUR,
+        'd' => self::DAY,
+        'w' => self::WEEK,
+
         'second' => self::SECOND,
         'minute' => self::MINUTE,
         'hour'   => self::HOUR,
@@ -24,17 +30,10 @@ class TimeUnit
         'hours'   => self::HOUR,
         'days'    => self::DAY,
         'weeks'   => self::WEEK,
-
-        's' => self::SECOND,
-        'm' => self::MINUTE,
-        'h' => self::HOUR,
-        'd' => self::DAY,
-        'w' => self::WEEK,
     ];
 
     public static function convert(string $unit): int
     {
-        // TODO: custom exception
-        return self::NAMES[$unit] ?? throw new Exception('invalid time unit: ' . $unit);
+        return self::NAMES[$unit] ?? throw new InvalidTimeUnitException('invalid time unit: ' . $unit);
     }
 }

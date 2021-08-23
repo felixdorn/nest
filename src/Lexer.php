@@ -8,6 +8,8 @@ use Felix\Nest\Support\TimeUnit;
 
 class Lexer
 {
+    public const KEYWORDS = ['every', 'for', 'between', 'until', 'at', 'from', 'once'];
+
     public function tokenize(string $code): array
     {
         $walker = new Walker($code);
@@ -33,7 +35,10 @@ class Lexer
 
             if ($keyword === 'every') {
                 $weekDays = $this->parseList(
-                    $walker->takeUntilSequence([' every ', ' for ', ' between ', ' until ', ' at ', ' from ']) // TODO: Should not be hard coded
+                    $walker->takeUntilSequence(array_map(
+                        static fn ($keyword) => ' ' . $keyword . ' ',
+                        self::KEYWORDS
+                    ))
                 );
 
                 $event['when'] = $weekDays;
@@ -62,10 +67,10 @@ class Lexer
             }
 
             if ($keyword === 'for') {
-                // TODO: Plural and shorthands (like: 1min, 2h) + should not be hardcoded
-                $measure = $walker->takeUntilSequence(array_map(function ($unit) {
-                    return ' ' . $unit;
-                }, array_keys(TimeUnit::NAMES)));
+                $measure = $walker->takeUntilSequence(array_map(
+                    static fn ($unit) => ' ' . $unit,
+                    array_keys(TimeUnit::NAMES)
+                ));
                 $unit = $walker->takeUntil(' ');
 
                 $event['duration'] = (int) $measure * TimeUnit::convert($unit);
@@ -82,7 +87,10 @@ class Lexer
 
                 // We skip the " to"
                 $walker->next(3);
-                $end = $walker->takeUntilSequence([' every ', ' for ', ' between ', ' until ', ' at ', ' from ']); // TODO: Should not be hard coded
+                $end = $walker->takeUntilSequence(array_map(
+                    static fn ($keyword) => ' ' . $keyword . ' ',
+                    self::KEYWORDS
+                ));
 
                 $event['at']       = $start;
                 $event['duration'] = $this->diffInSeconds(new DateTime($start), new DateTime($end));
