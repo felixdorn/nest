@@ -14,8 +14,18 @@ class Lexer
         $event  = [];
 
         while (!$walker->eof()) {
+            if ($walker->current() === '"') {
+                // Skipping the starting quote
+                $walker->next();
+                $event['label'] = $walker->takeUntil('"');
+                // Skipping the closing quote
+                $walker->next();
+                continue;
+            }
+
             $keyword = $walker->takeUntil(' ');
 
+            // Implicit once keyword
             if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $keyword)) {
                 $event['when'] = $keyword;
                 continue;

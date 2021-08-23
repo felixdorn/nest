@@ -3,7 +3,6 @@
 namespace Felix\Nest;
 
 use Carbon\CarbonInterface;
-use Exception;
 
 class Preprocessor
 {
@@ -72,12 +71,9 @@ class Preprocessor
 
     public function preprocess(string $code, CarbonInterface $current): string
     {
-        if (str_contains($code, '$')) {
-            // TODO: Yeah, make that better.
-            throw new Exception('compile error: code can not contain $ signs.');
-        }
+        $label = '';
 
-        $elements = explode(' ', strtolower(trim($code)));
+        $elements = explode(' ', trim($code));
 
         foreach ($elements as $k => $element) {
             $elements[$k] = $this->extractDates($element, $current);
@@ -115,13 +111,14 @@ class Preprocessor
 
     protected function extractTime(string $element): string
     {
-        preg_match('/^\d{1,2}(:\d{1,2}|)(am|pm|)$/', $element, $matches);
+        preg_match('/^\d{1,2}(:\d{1,2}|)(am|pm|PM|AM|)$/', $element, $matches);
 
         if (count($matches) === 0) {
             return $element;
         }
 
-        $format = $matches[2];
+        // So AM/PM becomes am/pm
+        $format = strtolower($matches[2]);
 
         // Time is 12-hour format
         if ($format !== '') {

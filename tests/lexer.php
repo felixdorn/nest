@@ -62,6 +62,11 @@ dataset('compilations', [
         'duration' => 2 * TimeUnit::MINUTE,
         'at'       => '21:30',
     ]],
+    ['"dentist appointment" 15/05/2005 for an hour', [
+        'label'    => 'dentist appointment',
+        'when'     => '15/05/2005',
+        'duration' => TimeUnit::HOUR,
+    ]],
 ]);
 
 beforeEach(function () {

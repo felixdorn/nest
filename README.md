@@ -1,8 +1,9 @@
 # TODO
 
-* labels
-* non-repeatable events (once keyword, and implicit once keyword)
-* generator
+* [ ] labels
+* [x] non-repeatable events (once keyword, and implicit once keyword)
+* [ ] generator
+* [ ] error reporting (for humans)
 
 # Nest
 
