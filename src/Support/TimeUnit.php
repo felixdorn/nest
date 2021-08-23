@@ -18,6 +18,12 @@ class TimeUnit
         'hour'   => self::HOUR,
         'day'    => self::DAY,
         'week'   => self::WEEK,
+
+        'seconds' => self::SECOND,
+        'minutes' => self::MINUTE,
+        'hours'   => self::HOUR,
+        'days'    => self::DAY,
+        'weeks'   => self::WEEK,
     ];
 
     public const ABBREVIATIONS = [
