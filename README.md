@@ -1,3 +1,5 @@
+![Nest written in blue on a lighter blue background](art/banner.svg)
+
 # Nest
 
 [![Tests](https://github.com/felixdorn/nest/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/felixdorn/nest/actions/workflows/tests.yml)
@@ -133,7 +135,8 @@ The start date is the current time.
 
 ## At
 
-At defines at which time an event starts. It is often used in combination with `for` that sets the duration of the event.
+At defines at which time an event starts. It is often used in combination with `for` that sets the duration of the
+event.
 
 ```
 at 6 for an hour
@@ -174,7 +177,7 @@ for a day
 > The compiler doesn't make a difference if you write `a` or `an` so `for a hour` still represents `1 hour` even though it is grammatically incorrect.
 
 ## API
- 
+
 ### Installation
 
 If you don't have composer, you can download it [here](https://getcomposer.org/download).
