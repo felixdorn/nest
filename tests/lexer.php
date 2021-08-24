@@ -52,6 +52,9 @@ dataset('compilations', [
         'at'        => '15:00',
         'duration'  => TimeUnit::HOUR,
     ]],
+    ['every MondAY, SATURDAY and sunday ', [
+        'when' => ['monday', 'saturday', 'sunday'],
+    ]],
     ['once 1/1/2021 from 15:00 to 16:00', [
         'when'     => '2021-01-01',
         'at'       => '15:00',

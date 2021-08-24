@@ -38,7 +38,7 @@ Here's an example output for `"something" once 1/1/2021 from 15:00 to 16:00`:
 
 * Natural syntax
 * Labeling
-* Error reporting for non-developers
+* Error reporting
 * Fast (enough)
 
 Already know this stuff? [Jump to the API documentation](#api)
@@ -66,6 +66,12 @@ You may use the shorthand `everyday` that transpiles to every day of the week
 
 ```
 everyday at 6:30
+```
+
+You may also use the shorthand `weekend` that transpiles to `saturday and sunday`
+
+```
+every weekend
 ```
 
 ### For
@@ -196,5 +202,5 @@ composer require felixdorn/nest
 ```
 
 If your event does not have fixed boundaries set using `between ... and ...` or `until ...`, it repeats indefinitely.
-Therefore, you need to set manual boundaries at compile time hence the second `CarbonPeriod` parameter.
-You can omit it if you know that your event as fixed boundaries. 
+Therefore, you need to set manual boundaries at compile time hence the second `CarbonPeriod` parameter. You can omit it
+if you know that your event as fixed boundaries. 

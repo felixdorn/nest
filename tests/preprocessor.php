@@ -30,6 +30,8 @@ dataset('processed', [
     ['a', '1'],
     ['an', '1'],
     ['"some Label like that"', '"some Label like that"'],
+    ['weekend', 'saturday and sunday'],
+    ['week-end', 'saturday and sunday'],
 ]);
 
 beforeEach(function () {

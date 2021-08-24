@@ -11,16 +11,18 @@ class Nest
     public function __construct(
         protected Preprocessor $preprocessor,
         protected Lexer $lexer,
-        protected Generator $generator
+        protected Generator $generator,
+        protected SemanticAnalyzer $semanticAnalyzer,
     ) {
     }
 
     public static function compile(string $code, ?CarbonPeriod $boundaries = null, ?CarbonInterface $now = null): array
     {
-        return (new static(
+        return (new self(
             new Preprocessor(),
             new Lexer(),
-            new Generator()
+            new Generator(),
+            new SemanticAnalyzer()
         ))->process($code, $now ?? Carbon::now(), $boundaries);
     }
 
@@ -28,6 +30,8 @@ class Nest
     {
         $code  = $this->preprocessor->preprocess($raw, $now);
         $event = $this->lexer->tokenize($code, $now);
+
+        $this->semanticAnalyzer->analyze($event);
 
         return $this->generator->generate($event, $now, $boundaries);
     }

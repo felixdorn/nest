@@ -4,9 +4,9 @@ namespace Felix\Nest;
 
 class Walker
 {
-    protected string $code;
-    protected int $length;
-    protected int $cursor;
+    public string $code;
+    public int $length;
+    public int $cursor;
 
     public function __construct(string $code)
     {

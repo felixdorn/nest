@@ -5,10 +5,13 @@ namespace Felix\Nest;
 use Carbon\CarbonInterface;
 use DateTime;
 use DateTimeInterface;
+use Felix\Nest\Concerns\HandlesErrors;
 use Felix\Nest\Support\TimeUnit;
 
 class Lexer
 {
+    use HandlesErrors;
+
     public const KEYWORDS = ['every', 'for', 'between', 'until', 'at', 'from', 'once'];
 
     public function tokenize(string $code, CarbonInterface $now): Event
@@ -42,7 +45,7 @@ class Lexer
                     ))
                 );
 
-                $event->when = $weekDays;
+                $event->when = array_map('strtolower', $weekDays);
                 continue;
             }
 
@@ -95,6 +98,7 @@ class Lexer
 
                 $event->at       = $start;
                 $event->duration = $this->diffInSeconds(new DateTime($start), new DateTime($end));
+                continue;
             }
 
             if ($keyword === 'once') {
@@ -102,7 +106,7 @@ class Lexer
                 continue;
             }
 
-            $walker->next();
+            $this->error('Syntax error, unexpected %s', $keyword);
         }
 
         return $event;

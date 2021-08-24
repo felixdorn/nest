@@ -155,6 +155,10 @@ class Preprocessor
             return '1';
         }
 
+        if ($element === 'weekend' || $element === 'week-end') {
+            return 'saturday and sunday';
+        }
+
         return $this->numbers[$element] ?? $element;
     }
 }
