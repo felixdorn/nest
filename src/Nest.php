@@ -2,10 +2,11 @@
 
 namespace Felix\Nest;
 
+use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 
-class Compiler
+class Nest
 {
     public function __construct(
         protected Preprocessor $preprocessor,
@@ -14,7 +15,16 @@ class Compiler
     ) {
     }
 
-    public function compile(string $raw, CarbonInterface $now, CarbonPeriod $boundaries): array
+    public static function compile(string $code, ?CarbonPeriod $boundaries = null, ?CarbonInterface $now = null): array
+    {
+        return (new static(
+            new Preprocessor(),
+            new Lexer(),
+            new Generator()
+        ))->process($code, $now ?? Carbon::now(), $boundaries);
+    }
+
+    public function process(string $raw, CarbonInterface $now, ?CarbonPeriod $boundaries): array
     {
         $code  = $this->preprocessor->preprocess($raw, $now);
         $event = $this->lexer->tokenize($code, $now);

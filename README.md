@@ -34,12 +34,14 @@ Here's an example output for `"something" once 1/1/2021 from 15:00 to 16:00`:
 ]
 ```
 
-## Features
+# Features
 
 * Natural syntax
 * Labeling
 * Error reporting for non-developers
 * Fast (enough)
+
+Already know this stuff? [Jump to the API documentation](#api)
 
 ## Reproducibility
 
@@ -168,3 +170,31 @@ for a day
 > The compiler doesn't make a difference if you write `a` or `an` so `for a hour` still represents `1 hour` even though it is grammatically incorrect.
 
 You can **not** do math and write things such as `for 5 + 2 minutes`.
+
+## API
+
+### Installation
+
+If you don't have composer, you can download it [here](https://getcomposer.org/download)
+
+```php
+composer require felixdorn/nest
+```
+
+### Usage
+
+```php
+\Felix\Nest\Nest::compile(
+    'everyday for an hour at 12',
+    \Carbon\CarbonPeriod::create(
+        \Carbon\Carbon::now(),
+        \Carbon\Carbon::now()->addWeek()
+    )
+    # Optionally, you can also pass the current time as a third parameter.
+    # \Carbon\Carbon::now()
+)
+```
+
+If your event does not have fixed boundaries set using `between ... and ...` or `until ...`, it repeats indefinitely.
+Therefore, you need to set manual boundaries at compile time hence the second `CarbonPeriod` parameter.
+You can omit it if you know that your event as fixed boundaries. 

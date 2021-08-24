@@ -5,10 +5,11 @@ namespace Felix\Nest;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
+use Exception;
 
 class Generator
 {
-    public function generate(Event $event, CarbonInterface $current, CarbonPeriod $period): array
+    public function generate(Event $event, CarbonInterface $current, ?CarbonPeriod $period): array
     {
         $occurrences = [];
 
@@ -27,21 +28,21 @@ class Generator
                     }
 
                     // TODO: Clean up
-                    $start         = $this->setTimeFromEvent($day->clone(), $event);
+                    $start = $this->setTimeFromEvent($day->clone(), $event);
                     $occurrences[] = [$start->toDateTimeString(), $start->clone()->addSeconds($event->duration)->toDateTimeString()];
                 }
             } elseif (is_string($event->when)) {
                 if ($day->toDateString() === $event->when) {
                     // TODO: Clean up
-                    $start         = $this->setTimeFromEvent($day->clone(), $event);
+                    $start = $this->setTimeFromEvent($day->clone(), $event);
                     $occurrences[] = [$start->toDateTimeString(), $start->clone()->addSeconds($event->duration)->toDateTimeString()];
                 }
             }
         }
 
         return [
-            'label'       => $event->label,
-            'now'         => $current->toDateTimeString(),
+            'label' => $event->label,
+            'now' => $current->toDateTimeString(),
             'occurrences' => $occurrences,
         ];
     }
@@ -52,10 +53,20 @@ class Generator
      *
      * CarbonPeriod::create(min($event->startsAt, $period->start), min($event->endsAt, $period->end)).
      */
-    private function findRealEventBoundaries(Event $event, CarbonPeriod $period): CarbonPeriod
+    private function findRealEventBoundaries(Event $event, ?CarbonPeriod $period): CarbonPeriod
     {
+        if ($period === null) {
+            if ($event->startsAt === null && $event->endsAt === null) {
+                throw new Exception('No boundaries set for an infinitely repeatable event.');
+            }
+
+            return CarbonPeriod::create(
+                Carbon::parse($event->startsAt),
+                Carbon::parse($event->endsAt)
+            );
+        }
         $start = null;
-        $end   = null;
+        $end = null;
 
         if ($event->startsAt === null) {
             $start = $period->start;
@@ -89,7 +100,7 @@ class Generator
         if (is_string($event->at)) {
             [$hours, $minutes] = explode(':', $event->at);
 
-            $date->hours((int) $hours)->minutes((int) $minutes);
+            $date->hours((int)$hours)->minutes((int)$minutes);
         }
 
         return $date;
