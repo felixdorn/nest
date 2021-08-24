@@ -72,12 +72,12 @@ class Generator
         if ($event->startsAt === null) {
             $start = $period->start;
         } else {
-            $eventStartsAt = Carbon::parse($event->endsAt);
+            $eventStartsAt = Carbon::parse($event->startsAt);
 
             if ($eventStartsAt->lessThan($period->start)) {
                 $start = $eventStartsAt;
             } else {
-                $start = $period->end;
+                $start = $period->start;
             }
         }
 

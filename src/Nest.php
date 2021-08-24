@@ -8,31 +8,39 @@ use Carbon\CarbonPeriod;
 
 class Nest
 {
-    public function __construct(
-        protected Preprocessor $preprocessor,
-        protected Lexer $lexer,
-        protected Generator $generator,
-        protected SemanticAnalyzer $semanticAnalyzer,
-    ) {
-    }
+    private static ?Preprocessor $preprocessor         = null;
+    private static ?Lexer $lexer                       = null;
+    private static ?SemanticAnalyzer $semanticAnalyzer = null;
+    private static ?Generator $generator               = null;
 
     public static function compile(string $code, ?CarbonPeriod $boundaries = null, ?CarbonInterface $now = null): array
     {
-        return (new self(
-            new Preprocessor(),
-            new Lexer(),
-            new Generator(),
-            new SemanticAnalyzer()
-        ))->process($code, $now ?? Carbon::now(), $boundaries);
+        return (new self())->process($code, $now ?? Carbon::now(), $boundaries);
     }
 
     public function process(string $raw, CarbonInterface $now, ?CarbonPeriod $boundaries): array
     {
-        $code  = $this->preprocessor->preprocess($raw, $now);
-        $event = $this->lexer->tokenize($code, $now);
+        if (self::$preprocessor === null) {
+            self::$preprocessor = new Preprocessor();
+        }
 
-        $this->semanticAnalyzer->analyze($event);
+        if (self::$lexer === null) {
+            self::$lexer = new Lexer();
+        }
 
-        return $this->generator->generate($event, $now, $boundaries);
+        if (self::$semanticAnalyzer === null) {
+            self::$semanticAnalyzer = new SemanticAnalyzer();
+        }
+
+        if (self::$generator === null) {
+            self::$generator = new Generator();
+        }
+
+        $code  = self::$preprocessor->preprocess($raw, $now);
+        $event = self::$lexer->tokenize($code, $now);
+
+        self::$semanticAnalyzer->analyze($event);
+
+        return self::$generator->generate($event, $now, $boundaries);
     }
 }

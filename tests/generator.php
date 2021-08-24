@@ -17,27 +17,33 @@ beforeEach(function () {
 
 dataset('generated', [
     ['every monday at 12 for an hour', [
-        'label' => null,
-        'now' => '2021-01-01 00:00:00',
+        'label'       => null,
+        'now'         => '2021-01-01 00:00:00',
         'occurrences' => [
             '2021-01-04 12:00:00' => '2021-01-04 13:00:00',
         ],
     ]],
     ['"dentist appointment" 5/1/2021 from 17:30 to 18:15', [
-        'label' => 'dentist appointment',
-        'now' => '2021-01-01 00:00:00',
+        'label'       => 'dentist appointment',
+        'now'         => '2021-01-01 00:00:00',
         'occurrences' => [
             '2021-01-05 17:30:00' => '2021-01-05 18:15:00',
         ],
     ]],
-    ['every monday, wednesday, friday and sunday at 22 for an hour between 15/04/2005 and 18/04/2005', [
-        'label' => null,
-        'now' => '2005-04-15 00:00:00',
-        'occurrences' => [],
+    ['every monday, wednesday, friday and sunday at 22 for an hour between 15/04/2005 and 16/05/2006', [
+        'label'       => null,
+        'now'         => '2005-04-15 00:00:00',
+        'occurrences' => [
+            '2005-04-15 22:00:00' => '2005-04-15 23:00:00',
+            '2005-04-17 22:00:00' => '2005-04-17 23:00:00',
+            '2005-04-18 22:00:00' => '2005-04-18 23:00:00',
+            '2005-04-20 22:00:00' => '2005-04-20 23:00:00',
+            '2005-04-22 22:00:00' => '2005-04-22 23:00:00',
+        ],
     ]],
     ['"something" once 1/1/2021 from 15:00 to 16:00', [
-        'label' => 'something',
-        'now' => '2021-01-01 00:00:00',
+        'label'       => 'something',
+        'now'         => '2021-01-01 00:00:00',
         'occurrences' => [
             '2021-01-01 15:00:00' => '2021-01-01 16:00:00',
         ],
