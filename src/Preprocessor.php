@@ -84,7 +84,7 @@ class Preprocessor
 
     protected function extractDates(string $element, CarbonInterface $current): string
     {
-        $element = preg_replace('/^(\d{1,2})\/(\d{1,2})\/(\d{1,4})$/', '$3-$2-$1', $element);
+        $element = preg_replace('/^(\d{1,2})\/(\d{1,2})\/(\d{1,4})$/', '$3-$2-$1', $element) ?: $element;
 
         preg_match('/^\d{1,4}-\d{1,2}-\d{1,2}$/', $element, $matches);
 

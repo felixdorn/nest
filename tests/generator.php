@@ -29,15 +29,21 @@ dataset('generated', [
         ],
     ]],
     ['"dentist appointment" 5/1/2021 from 17:30 to 18:15', [
-        'label'      => 'dentist appointment',
-        'now'        => '2021-01-01 00:00:00',
+        'label'       => 'dentist appointment',
+        'now'         => '2021-01-01 00:00:00',
         'occurrences' => [
             ['2021-01-05 17:30:00', '2021-01-05 18:15:00'],
         ],
     ]],
+    ['every monday, wednesday, friday and sunday at 22 for an hour between 15/04/2005 and 18/04/2005', [
+        'label'       => null,
+        'now'         => '2005-04-15 00:00:00',
+        'occurrences' => [],
+    ]],
 ]);
 
 it('generates', function (string $code, array $output) {
+    Carbon::setTestNow(Carbon::parse($output['now']));
     $now = Carbon::now();
     expect(
         $this->generator->generate(

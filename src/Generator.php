@@ -2,6 +2,7 @@
 
 namespace Felix\Nest;
 
+use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 
@@ -11,7 +12,14 @@ class Generator
     {
         $occurrences = [];
 
+        $period = $this->findRealEventBoundaries($event, $period);
+
         foreach ($period as $day) {
+            // This makes PHPStan happy.
+            if (is_null($day)) {
+                continue;
+            }
+
             if (is_array($event->when)) {
                 foreach ($event->when as $weekDay) {
                     if (strtolower($day->dayName) !== $weekDay) {
@@ -23,7 +31,7 @@ class Generator
                 }
             } elseif (is_string($event->when)) {
                 if ($day->toDateString() === $event->when) {
-                    $start = $this->setTimeFromEvent($day->clone(), $event);
+                    $start         = $this->setTimeFromEvent($day->clone(), $event);
                     $occurrences[] = [$start->toDateTimeString(), $start->clone()->addSeconds($event->duration)->toDateTimeString()];
                 }
             }
@@ -34,6 +42,44 @@ class Generator
             'now'         => $current->toDateTimeString(),
             'occurrences' => $occurrences,
         ];
+    }
+
+    /**
+     * This function find the smallest time window that the event occurs in.
+     * If the code below looks unclear to you, here's a cleaner version:.
+     *
+     * CarbonPeriod::create(min($event->startsAt, $period->start), min($event->endsAt, $period->end)).
+     */
+    private function findRealEventBoundaries(Event $event, CarbonPeriod $period): CarbonPeriod
+    {
+        $start = null;
+        $end   = null;
+
+        if ($event->startsAt === null) {
+            $start = $period->start;
+        } else {
+            $eventStartsAt = Carbon::parse($event->endsAt);
+
+            if ($eventStartsAt->lessThan($period->start)) {
+                $start = $eventStartsAt;
+            } else {
+                $start = $period->end;
+            }
+        }
+
+        if ($event->endsAt === null) {
+            $end = $period->end;
+        } else {
+            $eventEndsAt = Carbon::parse($event->endsAt);
+
+            if ($eventEndsAt->lessThan($period->end)) {
+                $end = $eventEndsAt;
+            } else {
+                $end = $period->end;
+            }
+        }
+
+        return CarbonPeriod::create($start, $end);
     }
 
     private function setTimeFromEvent(CarbonInterface $date, Event $event): CarbonInterface
