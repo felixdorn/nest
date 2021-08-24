@@ -178,10 +178,10 @@ for a day
 You can **not** do math and write things such as `for 5 + 2 minutes`.
 
 ## API
-
+ 
 ### Installation
 
-If you don't have composer, you can download it [here](https://getcomposer.org/download)
+If you don't have composer, you can download it [here](https://getcomposer.org/download).
 
 ```php
 composer require felixdorn/nest

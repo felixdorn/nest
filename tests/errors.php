@@ -28,3 +28,7 @@ it('throws an error', function (string $code, string $exceptionMessage) {
 
     expect($errorThrown)->toBe(true);
 })->with('invalidCode');
+
+it('throws an error when no boundaries are set for an infinitely repeatable event', function () {
+    Nest::compile('every monday');
+})->throws(CompileErrorException::class, 'No boundaries set for an infinitely repeatable event.');

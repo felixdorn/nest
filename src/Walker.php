@@ -29,7 +29,7 @@ class Walker
                     return $carry;
                 }
 
-                // We remove the escape control character.
+                // We remove the escape symbol.
                 $carry = substr($carry, 0, -1);
             }
 
@@ -89,13 +89,9 @@ class Walker
         return $carry;
     }
 
-    public function rewind(?int $n = null): self
+    public function rewind(int $n = 1): self
     {
-        if ($n === null) {
-            $this->cursor = 0;
-        } else {
-            $this->cursor -= $n;
-        }
+        $this->cursor -= $n;
 
         return $this;
     }

@@ -70,6 +70,9 @@ dataset('compilations', [
         'when'     => '2005-05-15',
         'duration' => TimeUnit::HOUR,
     ]],
+    ['"hello \"world\""', [
+        'label' => 'hello "world"',
+    ]],
 ]);
 
 beforeEach(function () {

@@ -32,6 +32,7 @@ dataset('processed', [
     ['"some Label like that"', '"some Label like that"'],
     ['weekend', 'saturday and sunday'],
     ['week-end', 'saturday and sunday'],
+    ['"hello \"world\""', '"hello \"world\""'],
 ]);
 
 beforeEach(function () {

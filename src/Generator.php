@@ -15,14 +15,10 @@ class Generator
     {
         $occurrences = [];
 
-        $period = $this->findRealEventBoundaries($event, $period);
+        $periodWithinBoundaries = $this->findRealEventBoundaries($event, $period);
 
-        foreach ($period as $day) {
-            // This makes PHPStan happy.
-            if (is_null($day)) {
-                continue;
-            }
-
+        /** @var CarbonInterface $day */
+        foreach ($periodWithinBoundaries as $day) {
             if (is_array($event->when)) {
                 foreach ($event->when as $weekDay) {
                     if (strtolower($day->dayName) !== $weekDay) {
