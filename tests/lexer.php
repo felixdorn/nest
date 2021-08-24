@@ -74,12 +74,19 @@ beforeEach(function () {
     $this->lexer = new Lexer();
 });
 
-it('compiles', function (string $code, array $expectedEvent) {
+it('compiles', function (string $code, array $rawExpectedEvent) {
     Carbon::setTestNow('2021/01/01 00:00:00');
 
     $event = $this->lexer->tokenize(
         $this->preprocessor->preprocess($code, Carbon::now())
     );
 
-    expect($event)->toBe($expectedEvent);
+    expect(array_filter($event->toArray()))->toBe(array_filter([
+        'when'     => $rawExpectedEvent['when'] ?? '',
+        'label'    => $rawExpectedEvent['label'] ?? '',
+        'startsAt' => $rawExpectedEvent['starts_at'] ?? '',
+        'endsAt'   => $rawExpectedEvent['ends_at'] ?? '',
+        'at'       => $rawExpectedEvent['at'] ?? '',
+        'duration' => $rawExpectedEvent['duration'] ?? '',
+    ]));
 })->with('compilations');

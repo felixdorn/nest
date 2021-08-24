@@ -3,6 +3,7 @@
 namespace Felix\Nest;
 
 use Carbon\CarbonInterface;
+use Carbon\CarbonPeriod;
 
 class Compiler
 {
@@ -13,11 +14,11 @@ class Compiler
     ) {
     }
 
-    public function compile(string $raw, CarbonInterface $current): array
+    public function compile(string $raw, CarbonInterface $now, CarbonPeriod $boundaries): array
     {
-        $code  = $this->preprocessor->preprocess($raw, $current);
+        $code  = $this->preprocessor->preprocess($raw, $now);
         $event = $this->lexer->tokenize($code);
 
-        return $this->generator->generate($event, $current);
+        return $this->generator->generate($event, $now, $boundaries);
     }
 }

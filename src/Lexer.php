@@ -10,16 +10,16 @@ class Lexer
 {
     public const KEYWORDS = ['every', 'for', 'between', 'until', 'at', 'from', 'once'];
 
-    public function tokenize(string $code): array
+    public function tokenize(string $code): Event
     {
         $walker = new Walker($code);
-        $event  = [];
+        $event  = new Event();
 
         while (!$walker->eof()) {
             if ($walker->current() === '"') {
                 // Skipping the starting quote
                 $walker->next();
-                $event['label'] = $walker->takeUntil('"');
+                $event->label = $walker->takeUntil('"');
                 // Skipping the closing quote
                 $walker->next();
                 continue;
@@ -29,7 +29,7 @@ class Lexer
 
             // Implicit once keyword
             if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $keyword)) {
-                $event['when'] = $keyword;
+                $event->when = $keyword;
                 continue;
             }
 
@@ -41,15 +41,15 @@ class Lexer
                     ))
                 );
 
-                $event['when'] = $weekDays;
+                $event->when = $weekDays;
                 continue;
             }
 
             if ($keyword === 'until') {
                 $ends = $walker->takeUntil(' ');
 
-                $event['starts_at'] = 'now';
-                $event['ends_at']   = $ends;
+                $event->startsAt = 'now';
+                $event->endsAt   = $ends;
                 continue;
             }
 
@@ -61,8 +61,8 @@ class Lexer
 
                 $endsAt = $walker->takeUntil(' ');
 
-                $event['starts_at'] = $startsAt;
-                $event['ends_at']   = $endsAt;
+                $event->startsAt = $startsAt;
+                $event->endsAt   = $endsAt;
                 continue;
             }
 
@@ -73,12 +73,12 @@ class Lexer
                 ));
                 $unit = $walker->takeUntil(' ');
 
-                $event['duration'] = (int) $measure * TimeUnit::convert($unit);
+                $event->duration = (int) $measure * TimeUnit::convert($unit);
                 continue;
             }
 
             if ($keyword === 'at') {
-                $event['at'] = $walker->takeUntil(' ');
+                $event->at = $walker->takeUntil(' ');
                 continue;
             }
 
@@ -92,12 +92,12 @@ class Lexer
                     self::KEYWORDS
                 ));
 
-                $event['at']       = $start;
-                $event['duration'] = $this->diffInSeconds(new DateTime($start), new DateTime($end));
+                $event->at       = $start;
+                $event->duration = $this->diffInSeconds(new DateTime($start), new DateTime($end));
             }
 
             if ($keyword === 'once') {
-                $event['when'] = $walker->takeUntil(' ');
+                $event->when = $walker->takeUntil(' ');
                 continue;
             }
 
