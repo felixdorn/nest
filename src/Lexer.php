@@ -2,6 +2,7 @@
 
 namespace Felix\Nest;
 
+use Carbon\CarbonInterface;
 use DateTime;
 use DateTimeInterface;
 use Felix\Nest\Support\TimeUnit;
@@ -10,7 +11,7 @@ class Lexer
 {
     public const KEYWORDS = ['every', 'for', 'between', 'until', 'at', 'from', 'once'];
 
-    public function tokenize(string $code): Event
+    public function tokenize(string $code, CarbonInterface $now): Event
     {
         $walker = new Walker($code);
         $event  = new Event();
@@ -48,7 +49,7 @@ class Lexer
             if ($keyword === 'until') {
                 $ends = $walker->takeUntil(' ');
 
-                $event->startsAt = 'now';
+                $event->startsAt = $now->toDateTimeString();
                 $event->endsAt   = $ends;
                 continue;
             }

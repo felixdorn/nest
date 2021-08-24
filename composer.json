@@ -13,8 +13,8 @@
         "nesbot/carbon": "^2.52"
     },
     "require-dev": {
-        "pestphp/pest": "^v1.16.0",
         "friendsofphp/php-cs-fixer": "^v3.0.0",
+        "pestphp/pest": "^v1.16.0",
         "phpstan/phpstan": "^0.12.88",
         "symfony/var-dumper": "^5.2.0"
     },

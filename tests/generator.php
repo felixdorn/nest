@@ -15,11 +15,6 @@ beforeEach(function () {
     );
 });
 
-/*
- * TODO: The compiler needs a carbon period
- *
- * The min stuff with min($compilerMaxPeriod, $betweenMax)
- */
 dataset('generated', [
     ['every monday at 12 for an hour', [
         'label'       => null,
@@ -48,7 +43,8 @@ it('generates', function (string $code, array $output) {
     expect(
         $this->generator->generate(
             $this->lexer->tokenize(
-                $this->preprocessor->preprocess($code, $now)
+                $this->preprocessor->preprocess($code, $now),
+                $now
             ),
             $now,
             CarbonPeriod::create($now, $now->clone()->addWeek())

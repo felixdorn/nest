@@ -38,7 +38,7 @@ dataset('compilations', [
         'duration'  => TimeUnit::HOUR,
         'at'        => '15:30',
         'when'      => ['monday', 'sunday', 'saturday', 'tuesday'],
-        'starts_at' => 'now', // TODO: Eww
+        'starts_at' => '2021-01-01 00:00:00',
         'ends_at'   => '2021-02-01',
     ]],
     ['for three hours at 6:30PM', [
@@ -78,7 +78,8 @@ it('compiles', function (string $code, array $rawExpectedEvent) {
     Carbon::setTestNow('2021/01/01 00:00:00');
 
     $event = $this->lexer->tokenize(
-        $this->preprocessor->preprocess($code, Carbon::now())
+        $this->preprocessor->preprocess($code, Carbon::now()),
+        Carbon::now()
     );
 
     expect(array_filter($event->toArray()))->toBe(array_filter([

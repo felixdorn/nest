@@ -17,7 +17,7 @@ class Compiler
     public function compile(string $raw, CarbonInterface $now, CarbonPeriod $boundaries): array
     {
         $code  = $this->preprocessor->preprocess($raw, $now);
-        $event = $this->lexer->tokenize($code);
+        $event = $this->lexer->tokenize($code, $now);
 
         return $this->generator->generate($event, $now, $boundaries);
     }
