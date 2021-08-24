@@ -28,7 +28,7 @@ class Lexer
             $keyword = $walker->takeUntil(' ');
 
             // Implicit once keyword
-            if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $keyword)) {
+            if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $keyword)) {
                 $event->when = $keyword;
                 continue;
             }

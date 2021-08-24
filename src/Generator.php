@@ -22,7 +22,10 @@ class Generator
                     $occurrences[] = [$start->toDateTimeString(), $start->clone()->addSeconds($event->duration)->toDateTimeString()];
                 }
             } elseif (is_string($event->when)) {
-                dd($day->toDateString(), $event->when);
+                if ($day->toDateString() === $event->when) {
+                    $start = $this->setTimeFromEvent($day->clone(), $event);
+                    $occurrences[] = [$start->toDateTimeString(), $start->clone()->addSeconds($event->duration)->toDateTimeString()];
+                }
             }
         }
 

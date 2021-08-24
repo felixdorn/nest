@@ -84,14 +84,16 @@ class Preprocessor
 
     protected function extractDates(string $element, CarbonInterface $current): string
     {
-        preg_match('/^\d{1,2}\/\d{1,2}\/\d{1,4}$/', $element, $matches);
+        $element = preg_replace('/^(\d{1,2})\/(\d{1,2})\/(\d{1,4})$/', '$3-$2-$1', $element);
+
+        preg_match('/^\d{1,4}-\d{1,2}-\d{1,2}$/', $element, $matches);
 
         if (count($matches) === 0) {
             return $element;
         }
         $date = $matches[0];
 
-        [$month, $day, $year] = explode('/', $date);
+        [$year, $month, $day] = explode('-', $date);
 
         $month = str_pad($month, 2, '0', STR_PAD_LEFT);
         $day   = str_pad($day, 2, '0', STR_PAD_LEFT);
@@ -104,7 +106,7 @@ class Preprocessor
             $year = ($current->millennium - 1) . '00' . $year;
         }
 
-        return sprintf('%s/%s/%s', $month, $day, $year);
+        return sprintf('%s-%s-%s', $year, $month, $day);
     }
 
     protected function extractTime(string $element): string
