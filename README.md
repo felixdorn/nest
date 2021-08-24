@@ -62,13 +62,13 @@ every monday and saturday
 
 See how lists work [here](#lists).
 
-You may use the shorthand `everyday` that transpiles to every day of the week
+You may use the shorthand `everyday` that compiles to every day of the week
 
 ```
 everyday at 6:30
 ```
 
-You may also use the shorthand `weekend` that transpiles to `saturday and sunday`
+You may also use the shorthand `weekend` that compiles to `saturday and sunday`
 
 ```
 every weekend
@@ -76,7 +76,7 @@ every weekend
 
 ### For
 
-For indicates for how long an event lasts.
+For indicates how long an event lasts.
 
 ```
 for one hour
@@ -133,7 +133,7 @@ The start date is the current time.
 
 ## At
 
-At defines at which time an event start. It is often used in combination with `for` that sets the duration of the event.
+At defines at which time an event starts. It is often used in combination with `for` that sets the duration of the event.
 
 ```
 at 6 for an hour
@@ -141,7 +141,7 @@ at 6 for an hour
 
 ## Lists
 
-A list contains one or many literals such as `monday` or `1:00` and these are seperated with commas or the word `and`.
+A list contains one or many literals such as `monday` or `1:00` and these are separated with commas or the word `and`.
 
 ```
 monday, saturday and sunday
@@ -158,8 +158,6 @@ You can use any number from `one` to a `sixty` in literal form.
 for fifty-five minutes
 ```
 
-Note: You may omit the hyphen and write things such as `thirty two` instead of `thirty-two` like a gangster.
-
 You can use any non-negative integer such as `1` or `42`.
 
 ```
@@ -174,8 +172,6 @@ for a day
 ```
 
 > The compiler doesn't make a difference if you write `a` or `an` so `for a hour` still represents `1 hour` even though it is grammatically incorrect.
-
-You can **not** do math and write things such as `for 5 + 2 minutes`.
 
 ## API
  
@@ -202,5 +198,5 @@ composer require felixdorn/nest
 ```
 
 If your event does not have fixed boundaries set using `between ... and ...` or `until ...`, it repeats indefinitely.
-Therefore, you need to set manual boundaries at compile time hence the second `CarbonPeriod` parameter. You can omit it
-if you know that your event as fixed boundaries. 
+Therefore, you need to set manual boundaries at compile-time hence the second `CarbonPeriod` parameter. You can omit it
+if you know that your event has fixed boundaries. 
