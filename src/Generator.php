@@ -26,14 +26,20 @@ class Generator
                     }
 
                     // TODO: Clean up
-                    $start                                   = $this->setTimeFromEvent($day->clone(), $event);
-                    $occurrences[$start->toDateTimeString()] = $start->clone()->addSeconds($event->duration)->toDateTimeString();
+                    $start         = $this->setTimeFromEvent($day->clone(), $event);
+                    $occurrences[] = [
+                        'starts_at' => $start->toDateTimeString(),
+                        'ends_at'   => $start->clone()->addSeconds($event->duration)->toDateTimeString(),
+                    ];
                 }
             } elseif (is_string($event->when)) {
                 if ($day->toDateString() === $event->when) {
                     // TODO: Clean up
-                    $start                                   = $this->setTimeFromEvent($day->clone(), $event);
-                    $occurrences[$start->toDateTimeString()] = $start->clone()->addSeconds($event->duration)->toDateTimeString();
+                    $start         = $this->setTimeFromEvent($day->clone(), $event);
+                    $occurrences[] = [
+                        'starts_at' => $start->toDateTimeString(),
+                        'ends_at'   => $start->clone()->addSeconds($event->duration)->toDateTimeString(),
+                    ];
                 }
             }
         }

@@ -31,7 +31,7 @@ Here's an example output for `"something" once 1/1/2021 from 15:00 to 16:00`:
     "label"       => "something",
     "now"         => "2021-01-01 00:00:00",
     "occurrences" => [
-        "2021-01-01 15:00:00" => "2021-01-01 16:00:00"
+        ["starts_at" => "2021-01-01 15:00:00", "ends_at" => "2021-01-01 16:00:00"]
     ]
 ]
 ```
