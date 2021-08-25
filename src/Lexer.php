@@ -12,7 +12,7 @@ class Lexer
 {
     use HandlesErrors;
 
-    public const KEYWORDS = ['every', 'for', 'between', 'until', 'at', 'from', 'once'];
+    public const KEYWORDS = ['every', 'for', 'between', 'until', 'at', 'from', 'once', 'in'];
 
     public function tokenize(string $code, CarbonInterface $now): Event
     {
@@ -103,6 +103,19 @@ class Lexer
 
             if ($keyword === 'once') {
                 $event->when = $walker->takeUntil(' ');
+                continue;
+            }
+
+            if ($keyword === 'in') {
+                $measure = $walker->takeUntilSequence(array_map(
+                    static fn ($unit) => ' ' . $unit,
+                    array_keys(TimeUnit::NAMES)
+                ));
+                $unit     = $walker->takeUntil(' ');
+                $duration = (int) $measure * TimeUnit::convert($unit);
+
+                $event->when = $now->clone()->addSeconds($duration)->toDateString();
+
                 continue;
             }
 

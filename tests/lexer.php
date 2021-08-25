@@ -73,6 +73,9 @@ dataset('compilations', [
     ['"hello \"world\""', [
         'label' => 'hello "world"',
     ]],
+    ['in 5 days', [
+        'when' => '2021-01-06',
+    ]],
 ]);
 
 beforeEach(function () {

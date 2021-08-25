@@ -100,10 +100,20 @@ Shorthands such as `1h` (1 hour) are also allowed.
 Here's a list of all available shorthands:
 
 * m: minute
-* min: minute
 * h: hour
 * d: day
 * w: week
+* min: minute
+
+## In
+
+In sets the date of a non-repeatable event relatively to the current date.
+
+```
+in 5 days
+```
+
+Refer to the [for keyword](#for) for a guide on time measurement units and how to quantify time.
 
 ## Between
 
