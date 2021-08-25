@@ -2,8 +2,6 @@
 
 namespace Felix\Nest\Exceptions;
 
-use Exception;
-
-class InvalidTimeUnitException extends Exception
+class InvalidTimeUnitException extends CompileErrorException
 {
 }
