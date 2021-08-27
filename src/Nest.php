@@ -8,6 +8,8 @@ use Carbon\CarbonPeriod;
 
 class Nest
 {
+    public const VERSION = '0.1.0';
+
     private static ?Preprocessor $preprocessor         = null;
     private static ?Lexer $lexer                       = null;
     private static ?SemanticAnalyzer $semanticAnalyzer = null;
