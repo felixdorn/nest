@@ -16,17 +16,19 @@ class SemanticAnalyzer
             Carbon::parse($event->startsAt);
             Carbon::parse($event->endsAt);
 
-            if (is_string($event->when)) {
-                Carbon::parse($event->when);
-            }
+            foreach ($event->when as $when) {
+                [$kind, $value] = $when;
 
-            if (is_array($event->when)) {
-                foreach ($event->when as $weekDay) {
+                if ($kind === 'every') {
                     $this->error_if(
-                        !in_array($weekDay, ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']),
+                        !in_array($value, ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']),
                         'Syntax error, unexpected weekday %s',
-                        $weekDay
+                        $value
                     );
+                }
+
+                if ($kind === 'once') {
+                    Carbon::parse($value);
                 }
             }
         } catch (InvalidFormatException) {

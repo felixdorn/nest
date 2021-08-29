@@ -33,7 +33,7 @@ class Lexer
 
             // Implicit once keyword
             if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $keyword)) {
-                $event->when = $keyword;
+                $event->when[] = ['once', $keyword];
                 continue;
             }
 
@@ -45,7 +45,12 @@ class Lexer
                     ))
                 );
 
-                $event->when = array_map('strtolower', $weekDays);
+                $event->when = array_merge(
+                    $event->when,
+                    array_map(function (string $weekDay) {
+                        return ['every', strtolower($weekDay)];
+                    }, $weekDays)
+                );
                 continue;
             }
 
@@ -102,7 +107,7 @@ class Lexer
             }
 
             if ($keyword === 'once') {
-                $event->when = $walker->takeUntil(' ');
+                $event->when[] = ['once', $walker->takeUntil(' ')];
                 continue;
             }
 
@@ -111,9 +116,9 @@ class Lexer
                     static fn ($unit) => ' ' . $unit,
                     array_keys(TimeUnit::NAMES)
                 ));
-                $unit        = TimeUnit::convert($walker->takeUntil(' '));
-                $duration    = (int) $measure * $unit;
-                $event->when = $now->clone()->addSeconds($duration)->toDateString();
+                $unit          = TimeUnit::convert($walker->takeUntil(' '));
+                $duration      = (int) $measure * $unit;
+                $event->when[] = ['once', $now->clone()->addSeconds($duration)->toDateString()];
 
                 if ($unit <= TimeUnit::HOUR) {
                     $event->at = $now->clone()->addSeconds($duration)->toTimeString('minute');

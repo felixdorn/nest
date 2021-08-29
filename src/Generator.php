@@ -11,7 +11,7 @@ class Generator
 {
     use HandlesErrors;
 
-    public function generate(Event $event, CarbonInterface $current, CarbonPeriod $period): array
+    public function generate(Event $event, CarbonInterface $current, ?CarbonPeriod $period): array
     {
         $occurrences = [];
 
@@ -19,28 +19,22 @@ class Generator
 
         /** @var CarbonInterface $day */
         foreach ($periodWithinBoundaries as $day) {
-            if (is_array($event->when)) {
-                foreach ($event->when as $weekDay) {
-                    if (strtolower($day->dayName) !== $weekDay) {
-                        continue;
-                    }
+            foreach ($event->when as $when) {
+                [$kind, $value] = $when;
 
-                    // TODO: Clean up
-                    $start         = $this->setTimeFromEvent($day->clone(), $event);
-                    $occurrences[] = [
-                        'starts_at' => $start->toDateTimeString(),
-                        'ends_at'   => $start->clone()->addSeconds($event->duration)->toDateTimeString(),
-                    ];
+                if ($kind === 'once' && !$day->isSameDay(Carbon::parse($value))) {
+                    continue;
                 }
-            } elseif (is_string($event->when)) {
-                if ($day->toDateString() === $event->when) {
-                    // TODO: Clean up
-                    $start         = $this->setTimeFromEvent($day->clone(), $event);
-                    $occurrences[] = [
-                        'starts_at' => $start->toDateTimeString(),
-                        'ends_at'   => $start->clone()->addSeconds($event->duration)->toDateTimeString(),
-                    ];
+
+                if ($kind === 'every' && $value !== $day->dayName) {
+                    continue;
                 }
+
+                $start         = $this->setTimeFromEvent($day->clone(), $event);
+                $occurrences[] = [
+                    'starts_at' => $start->toDateTimeString(),
+                    'ends_at'   => $start->clone()->addSeconds($event->duration)->toDateTimeString(),
+                ];
             }
         }
 

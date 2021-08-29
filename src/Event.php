@@ -5,7 +5,7 @@ namespace Felix\Nest;
 class Event
 {
     public function __construct(
-        public array | string | null $when = null,
+        public array $when = [],
         public ?string $label = null,
         public ?string $startsAt = null,
         public ?string $endsAt = null,
