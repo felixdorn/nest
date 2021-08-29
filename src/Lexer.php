@@ -111,10 +111,13 @@ class Lexer
                     static fn ($unit) => ' ' . $unit,
                     array_keys(TimeUnit::NAMES)
                 ));
-                $unit     = $walker->takeUntil(' ');
-                $duration = (int) $measure * TimeUnit::convert($unit);
-
+                $unit        = TimeUnit::convert($walker->takeUntil(' '));
+                $duration    = (int) $measure * $unit;
                 $event->when = $now->clone()->addSeconds($duration)->toDateString();
+
+                if ($unit <= TimeUnit::HOUR) {
+                    $event->at = $now->clone()->addSeconds($duration)->toTimeString('minute');
+                }
 
                 continue;
             }

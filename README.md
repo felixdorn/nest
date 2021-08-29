@@ -54,6 +54,24 @@ probably is).
 
 ## Keywords
 
+### Once
+
+Once indicates that an event is repeated once at a given date.
+
+```
+"birth" for a day once 15/04/2005
+```
+
+#### Implicit once
+
+You may omit the once keyword if you write it at the start of the program (or just after the label).
+
+`"birth" 15/04/2005` processed as `"birth" once 2005-04-15`
+
+`15/04/2005` processed as `once 2005-04-15`
+
+`at 6 15/04/2005` throws `Syntax error, unexpected 15/04/2005`
+
 ### Every
 
 Every indicates that an event is repeated it takes as a parameter one or many weekdays.

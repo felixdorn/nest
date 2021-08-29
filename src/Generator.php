@@ -11,7 +11,7 @@ class Generator
 {
     use HandlesErrors;
 
-    public function generate(Event $event, CarbonInterface $current, ?CarbonPeriod $period): array
+    public function generate(Event $event, CarbonInterface $current, CarbonPeriod $period): array
     {
         $occurrences = [];
 

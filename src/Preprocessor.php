@@ -74,8 +74,15 @@ class Preprocessor
         $elements = explode(' ', trim($code));
 
         foreach ($elements as $k => $element) {
+            $previous = $elements[$k - 1] ?? '';
+
             $elements[$k] = $this->extractDates($element, $current);
-            $elements[$k] = $this->extractTime($elements[$k]);
+
+            if ($previous === 'at' || $previous === 'from' || $previous === 'to') {
+                $elements[$k] = $this->extractTime($elements[$k]);
+                continue;
+            }
+
             $elements[$k] = $this->expandShorthands($elements[$k]);
         }
 

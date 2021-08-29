@@ -13,6 +13,11 @@ dataset('input', [
             ['starts_at' => '2021-01-03 05:00:00', 'ends_at' => '2021-01-03 06:00:00'],
         ],
     ]],
+//    ['"eat" every monday at 20 for 45 minutes
+//"sleep" every monday at 22 for 2 hours
+//"wake up" every monday at 7 for a minute until 1/1/2100', [
+//        ['starts']
+//    ]],
 ]);
 
 it('works', function ($code, array $expectedOutput) {

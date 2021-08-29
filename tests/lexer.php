@@ -73,8 +73,15 @@ dataset('compilations', [
     ['"hello \"world\""', [
         'label' => 'hello "world"',
     ]],
+    ['in an hour', [
+        'when' => '2021-01-01',
+        'at'   => '01:00',
+    ]],
     ['in 5 days', [
         'when' => '2021-01-06',
+    ]],
+    ['for 5 days', [
+        'duration' => 5 * TimeUnit::DAY,
     ]],
 ]);
 
@@ -99,4 +106,4 @@ it('compiles', function (string $code, array $rawExpectedEvent) {
         'at'       => $rawExpectedEvent['at'] ?? '',
         'duration' => $rawExpectedEvent['duration'] ?? '',
     ]));
-})->with('compilations');
+})->with('compilations')->only();
