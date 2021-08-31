@@ -71,7 +71,10 @@ class Preprocessor
 
     public function preprocess(string $code, CarbonInterface $current): string
     {
-        $elements = explode(' ', trim($code));
+        $elements = array_filter(
+            explode(' ', trim($code)),
+            fn ($element) => trim($element) !== ''
+        );
 
         foreach ($elements as $k => $element) {
             $previous = $elements[$k - 1] ?? '';

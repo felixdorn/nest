@@ -7,10 +7,10 @@ use Felix\Nest\Nest;
 
 dataset('invalidCode', [
     ['something random', 'Syntax error, unexpected something'],
-    ['everyday for an hour at 4 until 2004/1205/1451', 'Invalid format for a date, must be either d/m/y or y-m-d'],
-    ['30/30/30', 'Invalid format for a date, must be either d/m/y or y-m-d'],
-    ['until between', 'Invalid format for a date, must be either d/m/y or y-m-d'],
-    ['every wolf', 'Syntax error, unexpected weekday wolf'],
+    ['everyday for an hour at 4 until 2004/1205/1451', 'Invalid date: 2030-30-30'],
+    ['30/30/30', 'Invalid date: 2030-30-30'],
+    ['until between', 'Invalid date: between'],
+    ['every wolf', 'Invalid date: wolf'],
 ]);
 
 it('throws an error', function (string $code, string $exceptionMessage) {
@@ -19,7 +19,7 @@ it('throws an error', function (string $code, string $exceptionMessage) {
         Nest::compile($code, CarbonPeriod::create(
             Carbon::now(),
             Carbon::now()->addWeek()
-        ));
+        ), Carbon::now());
     } catch (CompileErrorException $e) {
         expect($e->getMessage())->toBe($exceptionMessage);
 
@@ -27,8 +27,4 @@ it('throws an error', function (string $code, string $exceptionMessage) {
     }
 
     expect($errorThrown)->toBe(true);
-})->with('invalidCode');
-
-it('throws an error when no boundaries are set for an infinitely repeatable event', function () {
-    Nest::compile('every monday');
-})->throws(CompileErrorException::class, 'No boundaries set for an infinitely repeatable event.');
+})->with('invalidCode')->only();

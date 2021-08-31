@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use DateTime;
 use DateTimeInterface;
 use Felix\Nest\Concerns\HandlesErrors;
+use Felix\Nest\Support\Arr;
 use Felix\Nest\Support\TimeUnit;
 
 class Lexer
@@ -33,7 +34,7 @@ class Lexer
 
             // Implicit once keyword
             if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $keyword)) {
-                $event->when[] = ['once', $keyword];
+                $event->when[] = $keyword;
                 continue;
             }
 
@@ -45,12 +46,7 @@ class Lexer
                     ))
                 );
 
-                $event->when = array_merge(
-                    $event->when,
-                    array_map(function (string $weekDay) {
-                        return ['every', strtolower($weekDay)];
-                    }, $weekDays)
-                );
+                $event->when = array_map('strtolower', $weekDays);
                 continue;
             }
 
@@ -107,7 +103,7 @@ class Lexer
             }
 
             if ($keyword === 'once') {
-                $event->when[] = ['once', $walker->takeUntil(' ')];
+                $event->when[] = $walker->takeUntil(' ');
                 continue;
             }
 
@@ -118,7 +114,7 @@ class Lexer
                 ));
                 $unit          = TimeUnit::convert($walker->takeUntil(' '));
                 $duration      = (int) $measure * $unit;
-                $event->when[] = ['once', $now->clone()->addSeconds($duration)->toDateString()];
+                $event->when[] = $now->clone()->addSeconds($duration)->toDateString();
 
                 if ($unit <= TimeUnit::HOUR) {
                     $event->at = $now->clone()->addSeconds($duration)->toTimeString('minute');
@@ -129,6 +125,8 @@ class Lexer
 
             $this->error('Syntax error, unexpected %s', $keyword);
         }
+
+        $event->when = Arr::flatten($event->when);
 
         return $event;
     }

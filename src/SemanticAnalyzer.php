@@ -12,27 +12,35 @@ class SemanticAnalyzer
 
     public function analyze(Event $event): void
     {
+        foreach ($event->when as $when) {
+            $isValidWeekday = in_array($when, ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
+
+            if ($isValidWeekday) {
+                continue;
+            }
+
+            try {
+                Carbon::parse($when);
+            } catch (InvalidFormatException) {
+                $this->error('Invalid date: %s', $when);
+                continue;
+            }
+
+            $this->error('Invalid weekday: %s', $when);
+        }
+
         try {
             Carbon::parse($event->startsAt);
-            Carbon::parse($event->endsAt);
-
-            foreach ($event->when as $when) {
-                [$kind, $value] = $when;
-
-                if ($kind === 'every') {
-                    $this->error_if(
-                        !in_array($value, ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']),
-                        'Syntax error, unexpected weekday %s',
-                        $value
-                    );
-                }
-
-                if ($kind === 'once') {
-                    Carbon::parse($value);
-                }
-            }
         } catch (InvalidFormatException) {
-            $this->error('Invalid format for a date, must be either d/m/y or y-m-d');
+            $this->error('Invalid date: %s', $event->startsAt);
         }
+
+        try {
+            Carbon::parse($event->endsAt);
+        } catch (InvalidFormatException) {
+            $this->error('Invalid date: %s', $event->endsAt);
+        }
+
+
     }
 }

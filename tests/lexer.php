@@ -106,4 +106,4 @@ it('compiles', function (string $code, array $rawExpectedEvent) {
         'at'       => $rawExpectedEvent['at'] ?? '',
         'duration' => $rawExpectedEvent['duration'] ?? '',
     ]));
-})->with('compilations')->only();
+})->with('compilations')->skip();

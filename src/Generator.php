@@ -11,95 +11,52 @@ class Generator
 {
     use HandlesErrors;
 
-    public function generate(Event $event, CarbonInterface $current, ?CarbonPeriod $period): array
+    public function generate(Event $event, CarbonPeriod $boundaries): array
     {
         $occurrences = [];
 
-        $periodWithinBoundaries = $this->findRealEventBoundaries($event, $period);
+        $realBoundaries = $this->findBoundaries(
+            $event->startsAt !== null ? Carbon::parse($event->startsAt) : null,
+            $event->endsAt !== null ? Carbon::parse($event->endsAt) : null,
+            $boundaries
+        );
 
-        /** @var CarbonInterface $day */
-        foreach ($periodWithinBoundaries as $day) {
-            foreach ($event->when as $when) {
-                [$kind, $value] = $when;
-
-                if ($kind === 'once' && !$day->isSameDay(Carbon::parse($value))) {
-                    continue;
-                }
-
-                if ($kind === 'every' && $value !== $day->dayName) {
-                    continue;
-                }
-
-                $start         = $this->setTimeFromEvent($day->clone(), $event);
-                $occurrences[] = [
-                    'starts_at' => $start->toDateTimeString(),
-                    'ends_at'   => $start->clone()->addSeconds($event->duration)->toDateTimeString(),
-                ];
+        foreach ($realBoundaries as $day) {
+            if ($day === null) {
+                continue;
             }
+
+            if (!in_array(strtolower($day->dayName), $event->when) &&
+                !in_array($day->toDateString(), $event->when)) {
+                continue;
+            }
+
+            $start = $day;
+
+            if (!is_null($event->at)) {
+                [$hours, $minutes] = explode(':', $event->at);
+
+                $start = $start->hours((int) $hours)->minutes((int) $minutes);
+            }
+
+            $occurrences[] = [
+                'label'     => $event->label,
+                'starts_at' => $start->toDateTimeString(),
+                'ends_at'   => $start->clone()->addSeconds($event->duration)->toDateTimeString(),
+            ];
         }
 
-        return [
-            'label'       => $event->label,
-            'now'         => $current->toDateTimeString(),
-            'occurrences' => $occurrences,
-        ];
+        return $occurrences;
     }
 
-    /**
-     * This function find the smallest time window that the event occurs in.
-     * If the code below looks unclear to you, here's a cleaner version:.
-     *
-     * CarbonPeriod::create(min($event->startsAt, $period->start), min($event->endsAt, $period->end)).
-     */
-    private function findRealEventBoundaries(Event $event, ?CarbonPeriod $period): CarbonPeriod
+    protected function findBoundaries(?CarbonInterface $start, ?CarbonInterface $end, CarbonPeriod $boundaries): CarbonPeriod
     {
-        if ($period === null) {
-            $this->error_if(
-                $event->startsAt === null && $event->endsAt === null,
-                'No boundaries set for an infinitely repeatable event.'
-            );
+        $start ??= $boundaries->start;
+        $end ??= $boundaries->end;
 
-            return CarbonPeriod::create(
-                Carbon::parse($event->startsAt),
-                Carbon::parse($event->endsAt)
-            );
-        }
-
-        if ($event->startsAt === null) {
-            $start = $period->start;
-        } else {
-            $eventStartsAt = Carbon::parse($event->startsAt);
-
-            if ($eventStartsAt->lessThan($period->start)) {
-                $start = $eventStartsAt;
-            } else {
-                $start = $period->start;
-            }
-        }
-
-        if ($event->endsAt === null) {
-            $end = $period->end;
-        } else {
-            $eventEndsAt = Carbon::parse($event->endsAt);
-
-            if ($eventEndsAt->lessThan($period->end)) {
-                $end = $eventEndsAt;
-            } else {
-                $end = $period->end;
-            }
-        }
-
-        return CarbonPeriod::create($start, $end);
-    }
-
-    private function setTimeFromEvent(CarbonInterface $date, Event $event): CarbonInterface
-    {
-        if (is_string($event->at)) {
-            [$hours, $minutes] = explode(':', $event->at);
-
-            $date->hours((int) $hours)->minutes((int) $minutes);
-        }
-
-        return $date;
+        return CarbonPeriod::create(
+            $boundaries->start->greaterThan($start) ? $boundaries->start : $start,
+            $boundaries->end->lessThan($end) ? $boundaries->end : $end
+        );
     }
 }

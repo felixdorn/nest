@@ -15,12 +15,12 @@ class Nest
     private static ?SemanticAnalyzer $semanticAnalyzer = null;
     private static ?Generator $generator               = null;
 
-    public static function compile(string $code, ?CarbonPeriod $boundaries = null, ?CarbonInterface $now = null): array
+    public static function compile(string $code, CarbonPeriod $boundaries, ?CarbonInterface $now = null): array
     {
-        return (new self())->process($code, $now ?? Carbon::now(), $boundaries);
+        return (new self())->process($code, $boundaries, $now ?? Carbon::now());
     }
 
-    public function process(string $raw, CarbonInterface $now, ?CarbonPeriod $boundaries): array
+    public function process(string $raw, CarbonPeriod $boundaries, CarbonInterface $now): array
     {
         if (self::$preprocessor === null) {
             self::$preprocessor = new Preprocessor();
@@ -43,6 +43,6 @@ class Nest
 
         self::$semanticAnalyzer->analyze($event);
 
-        return self::$generator->generate($event, $now, $boundaries);
+        return self::$generator->generate($event, $boundaries);
     }
 }
