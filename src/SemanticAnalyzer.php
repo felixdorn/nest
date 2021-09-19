@@ -22,10 +22,7 @@ class SemanticAnalyzer
                 Carbon::parse($when);
             } catch (InvalidFormatException) {
                 $errors[] = sprintf('Invalid date: %s', $when);
-                continue;
             }
-
-            $errors[] = sprintf('Invalid weekday: %s', $when);
         }
 
         try {
