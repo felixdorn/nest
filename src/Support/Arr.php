@@ -4,7 +4,10 @@ namespace Felix\Nest\Support;
 
 class Arr
 {
-    public static function flatten(array $array, $depth = 100): array
+    /**
+     * @param float|int $depth
+     */
+    public static function flatten(array $array, $depth = INF): array
     {
         $result = [];
 

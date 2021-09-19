@@ -5,7 +5,6 @@ namespace Felix\Nest;
 use Carbon\CarbonInterface;
 use DateTime;
 use DateTimeInterface;
-use Felix\Nest\Concerns\HandlesErrors;
 use Felix\Nest\Exceptions\CompileErrorException;
 use Felix\Nest\Support\Arr;
 use Felix\Nest\Support\TimeUnit;
