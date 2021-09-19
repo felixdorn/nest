@@ -39,4 +39,4 @@ it('works', function ($code, array $expectedOutput) {
     );
 
     expect($output)->toBe($expectedOutput);
-})->with('input')->skip();
+})->with('input');

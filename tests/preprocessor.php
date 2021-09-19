@@ -41,4 +41,4 @@ beforeEach(function () {
 
 it('processes', function (string $code, string $result) {
     expect($this->preprocessor->preprocess($code, Carbon::now()))->toBe($result);
-})->with('processed')->skip();
+})->with('processed');

@@ -64,6 +64,13 @@ dataset('generated', [
             'ends_at'   => '2021-01-01 16:00:00',
         ],
     ]],
+    ['"something else" in an hour for 30 minutes', [
+        [
+            'label'     => 'something else',
+            'starts_at' => '2021-01-01 01:00:00',
+            'ends_at'   => '2021-01-01 01:30:00',
+        ],
+    ]],
 ]);
 
 it('generates', function (string $code, array $output, ?string $now = null) {
@@ -79,4 +86,4 @@ it('generates', function (string $code, array $output, ?string $now = null) {
             CarbonPeriod::create($now, $now->clone()->addWeek())
         )
     )->toBe($output);
-})->with('generated')->skip();
+})->with('generated');
