@@ -6,13 +6,12 @@ use Carbon\CarbonInterface;
 use DateTime;
 use DateTimeInterface;
 use Felix\Nest\Concerns\HandlesErrors;
+use Felix\Nest\Exceptions\CompileErrorException;
 use Felix\Nest\Support\Arr;
 use Felix\Nest\Support\TimeUnit;
 
 class Lexer
 {
-    use HandlesErrors;
-
     public const KEYWORDS = ['every', 'for', 'between', 'until', 'at', 'from', 'once', 'in'];
 
     public function tokenize(string $code, CarbonInterface $now): Event
@@ -123,7 +122,7 @@ class Lexer
                 continue;
             }
 
-            $this->error('Syntax error, unexpected %s', $keyword);
+            throw new CompileErrorException('Syntax error, unexpected ' . $keyword);
         }
 
         $event->when = Arr::flatten($event->when);

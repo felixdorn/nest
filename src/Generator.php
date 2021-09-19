@@ -5,12 +5,9 @@ namespace Felix\Nest;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
-use Felix\Nest\Concerns\HandlesErrors;
 
 class Generator
 {
-    use HandlesErrors;
-
     public function generate(Event $event, CarbonPeriod $boundaries): array
     {
         $occurrences = [];

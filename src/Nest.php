@@ -5,6 +5,7 @@ namespace Felix\Nest;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
+use Felix\Nest\Exceptions\CompileErrorException;
 
 class Nest
 {
@@ -17,7 +18,9 @@ class Nest
 
     public static function compile(string $code, CarbonPeriod $boundaries, ?CarbonInterface $now = null): array
     {
-        return (new self())->process($code, $boundaries, $now ?? Carbon::now());
+        [$output, $errors] = (new self())->process($code, $boundaries, $now ?? Carbon::now());
+
+        return count($errors) > 0 ? throw new CompileErrorException($errors[0]) : $output;
     }
 
     public function process(string $raw, CarbonPeriod $boundaries, CarbonInterface $now): array
@@ -41,8 +44,19 @@ class Nest
         $code  = self::$preprocessor->preprocess($raw, $now);
         $event = self::$lexer->tokenize($code, $now);
 
-        self::$semanticAnalyzer->analyze($event);
+        $errors = self::$semanticAnalyzer->analyze($event);
 
-        return self::$generator->generate($event, $boundaries);
+        if (count($errors) > 0) {
+            return [[], $errors];
+        }
+
+        return [self::$generator->generate($event, $boundaries), []];
+    }
+
+    public static function laxCompile(string $code, CarbonPeriod $boundaries, ?CarbonInterface $now = null): array
+    {
+        [$output, $errors] = (new self())->process($code, $boundaries, $now ?? Carbon::now());
+
+        return [$output, $errors];
     }
 }

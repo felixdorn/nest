@@ -6,6 +6,7 @@ use Felix\Nest\Exceptions\CompileErrorException;
 use Felix\Nest\Nest;
 
 dataset('invalidCode', [
+    ['until between', 'Invalid date: between'],
     ['something random', 'Syntax error, unexpected something'],
     ['everyday for an hour at 4 until 2030/30/30', 'Invalid date: 2030/30/30'],
     /*
@@ -15,7 +16,6 @@ dataset('invalidCode', [
      * Implementing a symbol table could also help.
      */
     ['30/30/30', 'Invalid date: 2030-30-30'],
-    ['until between', 'Invalid date: between'],
     ['every wolf', 'Invalid date: wolf'],
 ]);
 
