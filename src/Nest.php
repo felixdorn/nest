@@ -30,7 +30,7 @@ class Nest
     {
         [$output, $errors] = self::getInstance()->process($code, $boundaries, $now ?? Carbon::now());
 
-        return count($errors) > 0 ? throw new CompileErrorException($errors[0]) : $output;
+        return !empty($errors) ? throw new CompileErrorException($errors[0]) : $output;
     }
 
     public function process(string $raw, CarbonPeriod $boundaries, CarbonInterface $now): array
@@ -40,8 +40,8 @@ class Nest
 
         $errors = $this->semanticAnalyzer->analyze($event);
 
-        if (count($errors) > 0) {
-            return [[], $errors];
+        if (!empty($errors)) {
+            return [null, $errors];
         }
 
         return [$this->generator->generate($event, $boundaries), []];
