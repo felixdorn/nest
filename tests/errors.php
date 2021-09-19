@@ -22,10 +22,11 @@ dataset('invalidCode', [
 it('throws an error', function (string $code, string $exceptionMessage) {
     $errorThrown = false;
     try {
-        Nest::compile($code, CarbonPeriod::create(
+        $event = Nest::compile($code, CarbonPeriod::create(
             Carbon::now(),
             Carbon::now()->addWeek()
         ), Carbon::now());
+
     } catch (CompileErrorException $e) {
         expect($e->getMessage())->toBe($exceptionMessage);
 

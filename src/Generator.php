@@ -8,13 +8,11 @@ use Carbon\CarbonPeriod;
 
 class Generator
 {
-    public function generate(Event $event, CarbonPeriod $boundaries): array
+    public function generate(Event $event, CarbonPeriod $boundaries): Event
     {
-        $occurrences = [];
-
         $realBoundaries = $this->findBoundaries(
-            $event->startsAt !== null ? Carbon::parse($event->startsAt) : null,
-            $event->endsAt !== null ? Carbon::parse($event->endsAt) : null,
+            $event->getStartsAt() !== null ? Carbon::parse($event->getStartsAt()) : null,
+            $event->getEndsAt() !== null ? Carbon::parse($event->getEndsAt()) : null,
             $boundaries
         );
 
@@ -23,27 +21,23 @@ class Generator
                 continue;
             }
 
-            if (!in_array(strtolower($day->dayName), $event->when) &&
-                !in_array($day->toDateString(), $event->when)) {
+            if (!in_array(strtolower($day->dayName), $event->getWhen()) &&
+                !in_array($day->toDateString(), $event->getWhen())) {
                 continue;
             }
 
             $start = $day;
 
-            if (!is_null($event->at)) {
-                [$hours, $minutes] = explode(':', $event->at);
+            if (!is_null($event->getAt())) {
+                [$hours, $minutes] = explode(':', $event->getAt());
 
                 $start = $start->hours((int) $hours)->minutes((int) $minutes);
             }
 
-            $occurrences[] = [
-                'label'     => $event->label,
-                'starts_at' => $start->toDateTimeString(),
-                'ends_at'   => $start->clone()->addSeconds($event->duration)->toDateTimeString(),
-            ];
+            $event->addOccurrence($start, $start->clone()->addSeconds($event->getDuration()));
         }
 
-        return $occurrences;
+        return $event;
     }
 
     protected function findBoundaries(?CarbonInterface $start, ?CarbonInterface $end, CarbonPeriod $boundaries): CarbonPeriod

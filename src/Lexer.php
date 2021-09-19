@@ -22,7 +22,7 @@ class Lexer
             if ($walker->current() === '"') {
                 // Skipping the starting quote
                 $walker->next();
-                $event->label = $walker->takeUntil('"');
+                $event->setLabel($walker->takeUntil('"'));
                 // Skipping the closing quote
                 $walker->next();
                 continue;
@@ -32,7 +32,7 @@ class Lexer
 
             // Implicit once keyword
             if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $keyword)) {
-                $event->when[] = $keyword;
+                $event->addWhen($keyword);
                 continue;
             }
 
@@ -44,15 +44,15 @@ class Lexer
                     ))
                 );
 
-                $event->when = array_map('strtolower', $weekDays);
+                $event->setWhen(array_map('strtolower', $weekDays));
                 continue;
             }
 
             if ($keyword === 'until') {
                 $ends = $walker->takeUntil(' ');
 
-                $event->startsAt = $now->toDateTimeString();
-                $event->endsAt   = $ends;
+                $event->setStartsAt($now);
+                $event->setEndsAt($ends);
                 continue;
             }
 
@@ -64,8 +64,8 @@ class Lexer
 
                 $endsAt = $walker->takeUntil(' ');
 
-                $event->startsAt = $startsAt;
-                $event->endsAt   = $endsAt;
+                $event->setStartsAt($startsAt);
+                $event->setEndsAt($endsAt);
                 continue;
             }
 
@@ -76,12 +76,12 @@ class Lexer
                 ));
                 $unit = $walker->takeUntil(' ');
 
-                $event->duration = (int) $measure * TimeUnit::convert($unit);
+                $event->setDuration((int) $measure * TimeUnit::convert($unit));
                 continue;
             }
 
             if ($keyword === 'at') {
-                $event->at = $walker->takeUntil(' ');
+                $event->setAt($walker->takeUntil(' '));
                 continue;
             }
 
@@ -95,13 +95,13 @@ class Lexer
                     self::KEYWORDS
                 ));
 
-                $event->at       = $start;
-                $event->duration = $this->diffInSeconds(new DateTime($start), new DateTime($end));
+                $event->setAt($start);
+                $event->setDuration($this->diffInSeconds(new DateTime($start), new DateTime($end)));
                 continue;
             }
 
             if ($keyword === 'once') {
-                $event->when[] = $walker->takeUntil(' ');
+                $event->addWhen($walker->takeUntil(' '));
                 continue;
             }
 
@@ -112,10 +112,10 @@ class Lexer
                 ));
                 $unit          = TimeUnit::convert($walker->takeUntil(' '));
                 $duration      = (int) $measure * $unit;
-                $event->when[] = $now->clone()->addSeconds($duration)->toDateString();
+                $event->addWhen($now->clone()->addSeconds($duration)->toDateString());
 
                 if ($unit <= TimeUnit::HOUR) {
-                    $event->at = $now->clone()->addSeconds($duration)->toTimeString('minute');
+                    $event->setAt($now->clone()->addSeconds($duration)->toTimeString('minute'));
                 }
 
                 continue;
@@ -124,7 +124,7 @@ class Lexer
             throw new CompileErrorException('Syntax error, unexpected ' . $keyword);
         }
 
-        $event->when = Arr::flatten($event->when);
+        $event->setWhen(Arr::flatten($event->getWhen()));
 
         return $event;
     }

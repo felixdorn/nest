@@ -38,7 +38,7 @@ dataset('compilations', [
         'duration'  => TimeUnit::HOUR,
         'at'        => '15:30',
         'when'      => ['monday', 'sunday', 'saturday', 'tuesday'],
-        'starts_at' => '2021-01-01 00:00:00',
+        'starts_at' => '2021-01-01',
         'ends_at'   => '2021-02-01',
     ]],
     ['for three hours at 6:30PM', [
@@ -90,7 +90,7 @@ beforeEach(function () {
     $this->lexer = new Lexer();
 });
 
-it('compiles', function (string $code, array $rawExpectedEvent) {
+it('compiles', function (string $code, array $expectedEvent) {
     Carbon::setTestNow('2021/01/01 00:00:00');
 
     $event = $this->lexer->tokenize(
@@ -98,12 +98,10 @@ it('compiles', function (string $code, array $rawExpectedEvent) {
         Carbon::now()
     );
 
-    expect(array_filter($event->toArray()))->toBe(array_filter([
-        'when'     => $rawExpectedEvent['when'] ?? '',
-        'label'    => $rawExpectedEvent['label'] ?? '',
-        'startsAt' => $rawExpectedEvent['starts_at'] ?? '',
-        'endsAt'   => $rawExpectedEvent['ends_at'] ?? '',
-        'at'       => $rawExpectedEvent['at'] ?? '',
-        'duration' => $rawExpectedEvent['duration'] ?? '',
-    ]));
+    expect($event->getWhen())->toBe($expectedEvent['when'] ?? []);
+    expect($event->getLabel())->toBe($expectedEvent['label'] ?? null);
+    expect($event->getStartsAt()?->toDateString())->toBe($expectedEvent['starts_at'] ?? null);
+    expect($event->getEndsAt()?->toDateString())->toBe($expectedEvent['ends_at'] ?? null);
+    expect($event->getAt())->toBe($expectedEvent['at'] ?? null);
+    expect($event->getDuration())->toBe($expectedEvent['duration'] ?? 0);
 })->with('compilations');
