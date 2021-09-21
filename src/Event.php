@@ -11,7 +11,6 @@ class Event
 {
     private string|null $label             = null;
     private array $occurrences             = [];
-    private array $compilationErrors       = [];
     private CarbonInterface|null $startsAt = null;
     private CarbonInterface|null $endsAt   = null;
     private array $when                    = [];
@@ -20,17 +19,12 @@ class Event
 
     public function addOccurrence(CarbonInterface $startsAt, CarbonInterface $endsAt): self
     {
-        $this->occurrences[] = ['starts_at' => $startsAt->toDateTimeString('minute'), 'ends_at' => $endsAt->toDateTimeString('minute')];
+        $this->occurrences[] = ['starts_at' => $startsAt->toDateTimeString(), 'ends_at' => $endsAt->toDateTimeString()];
 
         return $this;
     }
 
-    public function addCompilationError(string $message, string ...$bindings): void
-    {
-        throw new CompileErrorException(sprintf($message, ...$bindings));
-    }
-
-    public function getAt(): ?string
+    public function at(): ?string
     {
         return $this->at;
     }
@@ -42,7 +36,7 @@ class Event
         return $this;
     }
 
-    public function getLabel(): ?string
+    public function label(): ?string
     {
         return $this->label;
     }
@@ -54,17 +48,12 @@ class Event
         return $this;
     }
 
-    public function getCompilationErrors(): array
-    {
-        return $this->compilationErrors;
-    }
-
-    public function getOccurrences(): array
+    public function occurrences(): array
     {
         return $this->occurrences;
     }
 
-    public function getDuration(): int
+    public function duration(): int
     {
         return $this->duration;
     }
@@ -76,7 +65,7 @@ class Event
         return $this;
     }
 
-    public function getStartsAt(): ?CarbonInterface
+    public function startsAt(): ?CarbonInterface
     {
         return $this->startsAt;
     }
@@ -96,7 +85,7 @@ class Event
         return $this;
     }
 
-    public function getEndsAt(): ?CarbonInterface
+    public function endsAt(): ?CarbonInterface
     {
         return $this->endsAt;
     }
@@ -116,7 +105,7 @@ class Event
         return $this;
     }
 
-    public function getWhen(): array
+    public function when(): array
     {
         return $this->when;
     }

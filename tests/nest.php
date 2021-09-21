@@ -12,46 +12,46 @@ use Felix\Nest\Nest;
 dataset('input', [
     ['"something" every weekend for an hour at 5', [
         [
-            'starts_at' => '2021-01-02 05:00',
-            'ends_at'   => '2021-01-02 06:00',
+            'starts_at' => '2021-01-02 05:00:00',
+            'ends_at'   => '2021-01-02 06:00:00',
         ],
         [
-            'starts_at' => '2021-01-03 05:00',
-            'ends_at'   => '2021-01-03 06:00',
+            'starts_at' => '2021-01-03 05:00:00',
+            'ends_at'   => '2021-01-03 06:00:00',
         ],
     ]],
     ['every monday, wednesday, friday and sunday at 22 for an hour between 15/04/2005 and 16/05/2006', [
         [
-            'starts_at' => '2005-04-15 22:00',
-            'ends_at'   => '2005-04-15 23:00',
+            'starts_at' => '2005-04-15 22:00:00',
+            'ends_at'   => '2005-04-15 23:00:00',
         ],
         [
-            'starts_at' => '2005-04-17 22:00',
-            'ends_at'   => '2005-04-17 23:00',
+            'starts_at' => '2005-04-17 22:00:00',
+            'ends_at'   => '2005-04-17 23:00:00',
         ],
         [
-            'starts_at' => '2005-04-18 22:00',
-            'ends_at'   => '2005-04-18 23:00',
+            'starts_at' => '2005-04-18 22:00:00',
+            'ends_at'   => '2005-04-18 23:00:00',
         ],
         [
-            'starts_at' => '2005-04-20 22:00',
-            'ends_at'   => '2005-04-20 23:00',
+            'starts_at' => '2005-04-20 22:00:00',
+            'ends_at'   => '2005-04-20 23:00:00',
         ],
         [
-            'starts_at' => '2005-04-22 22:00',
-            'ends_at'   => '2005-04-22 23:00',
+            'starts_at' => '2005-04-22 22:00:00',
+            'ends_at'   => '2005-04-22 23:00:00',
         ],
     ], '2005-04-15 00:00:00'],
     ['"something" once 1/1/2021 from 15:00 to 16:00', [
         [
-            'starts_at' => '2021-01-01 15:00',
-            'ends_at'   => '2021-01-01 16:00',
+            'starts_at' => '2021-01-01 15:00:00',
+            'ends_at'   => '2021-01-01 16:00:00',
         ],
     ]],
     ['"something else" in an hour for 30 minutes', [
         [
-            'starts_at' => '2021-01-01 01:00',
-            'ends_at'   => '2021-01-01 01:30',
+            'starts_at' => '2021-01-01 01:00:00',
+            'ends_at'   => '2021-01-01 01:30:00',
         ],
     ]],
 ]);
@@ -70,5 +70,5 @@ it('works', function ($code, array $expectedOutput, ?string $now = null) {
         $now
     );
 
-    expect($event->getOccurrences())->toBe($expectedOutput);
+    expect($event->occurrences())->toBe($expectedOutput);
 })->with('input');

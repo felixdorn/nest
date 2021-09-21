@@ -98,10 +98,10 @@ it('compiles', function (string $code, array $expectedEvent) {
         Carbon::now()
     );
 
-    expect($event->getWhen())->toBe($expectedEvent['when'] ?? []);
-    expect($event->getLabel())->toBe($expectedEvent['label'] ?? null);
-    expect($event->getStartsAt()?->toDateString())->toBe($expectedEvent['starts_at'] ?? null);
-    expect($event->getEndsAt()?->toDateString())->toBe($expectedEvent['ends_at'] ?? null);
-    expect($event->getAt())->toBe($expectedEvent['at'] ?? null);
-    expect($event->getDuration())->toBe($expectedEvent['duration'] ?? 0);
+    expect($event->when())->toBe($expectedEvent['when'] ?? []);
+    expect($event->label())->toBe($expectedEvent['label'] ?? null);
+    expect($event->startsAt()?->toDateString())->toBe($expectedEvent['starts_at'] ?? null);
+    expect($event->endsAt()?->toDateString())->toBe($expectedEvent['ends_at'] ?? null);
+    expect($event->at())->toBe($expectedEvent['at'] ?? null);
+    expect($event->duration())->toBe($expectedEvent['duration'] ?? 0);
 })->with('compilations');

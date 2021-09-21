@@ -11,8 +11,8 @@ class Generator
     public function generate(Event $event, CarbonPeriod $boundaries): Event
     {
         $realBoundaries = $this->findBoundaries(
-            $event->getStartsAt() !== null ? Carbon::parse($event->getStartsAt()) : null,
-            $event->getEndsAt() !== null ? Carbon::parse($event->getEndsAt()) : null,
+            $event->startsAt() !== null ? Carbon::parse($event->startsAt()) : null,
+            $event->endsAt() !== null ? Carbon::parse($event->endsAt()) : null,
             $boundaries
         );
 
@@ -21,20 +21,20 @@ class Generator
                 continue;
             }
 
-            if (!in_array(strtolower($day->dayName), $event->getWhen()) &&
-                !in_array($day->toDateString(), $event->getWhen())) {
+            if (!in_array(strtolower($day->dayName), $event->when()) &&
+                !in_array($day->toDateString(), $event->when())) {
                 continue;
             }
 
             $start = $day;
 
-            if (!is_null($event->getAt())) {
-                [$hours, $minutes] = explode(':', $event->getAt());
+            if (!is_null($event->at())) {
+                [$hours, $minutes] = explode(':', $event->at());
 
                 $start = $start->hours((int) $hours)->minutes((int) $minutes);
             }
 
-            $event->addOccurrence($start, $start->clone()->addSeconds($event->getDuration()));
+            $event->addOccurrence($start, $start->clone()->addSeconds($event->duration()));
         }
 
         return $event;

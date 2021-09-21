@@ -110,10 +110,9 @@ class Lexer
                     static fn ($unit) => ' ' . $unit,
                     array_keys(TimeUnit::NAMES)
                 ));
-                $unit          = TimeUnit::convert($walker->takeUntil(' '));
-                $duration      = (int) $measure * $unit;
+                $unit     = TimeUnit::convert($walker->takeUntil(' '));
+                $duration = (int) $measure * $unit;
                 $event->addWhen($now->clone()->addSeconds($duration)->toDateString());
-
                 if ($unit <= TimeUnit::HOUR) {
                     $event->setAt($now->clone()->addSeconds($duration)->toTimeString('minute'));
                 }
@@ -124,7 +123,7 @@ class Lexer
             throw new CompileErrorException('Syntax error, unexpected ' . $keyword);
         }
 
-        $event->setWhen(Arr::flatten($event->getWhen()));
+        $event->setWhen(Arr::flatten($event->when()));
 
         return $event;
     }
