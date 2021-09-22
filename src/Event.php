@@ -64,7 +64,7 @@ class Event
         return $this->endsAt;
     }
 
-    public function setEndsAt($value): self
+    public function setEndsAt(string|CarbonInterface $value): self
     {
         if (is_string($value)) {
             try {
