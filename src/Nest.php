@@ -2,7 +2,6 @@
 
 namespace Felix\Nest;
 
-use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 
@@ -23,12 +22,12 @@ class Nest
         $this->generator    = new Generator();
     }
 
-    public static function compile(string $code, CarbonPeriod $boundaries, ?CarbonInterface $now = null): Event
+    public static function compile(string $code, CarbonPeriod $boundaries, CarbonInterface $now): array
     {
-        return self::getInstance()->process($code, $boundaries, $now ?? Carbon::now());
+        return self::getInstance()->process(...func_get_args());
     }
 
-    public function process(string $raw, CarbonPeriod $boundaries, CarbonInterface $now): Event
+    public function process(string $raw, CarbonPeriod $boundaries, CarbonInterface $now): array
     {
         $code  = $this->preprocessor->preprocess($raw, $now);
         $event = $this->lexer->tokenize($code, $now);

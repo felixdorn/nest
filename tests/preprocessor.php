@@ -29,10 +29,6 @@ dataset('processed', [
     ['everyday', 'every monday, tuesday, wednesday, thursday, friday, saturday, sunday'],
     ['a', '1'],
     ['an', '1'],
-    ['"some Label like that"', '"some Label like that"'],
-    ['weekend', 'saturday and sunday'],
-    ['week-end', 'saturday and sunday'],
-    ['"hello \"world\""', '"hello \"world\""'],
 ]);
 
 beforeEach(function () {

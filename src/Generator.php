@@ -8,11 +8,12 @@ use Carbon\CarbonPeriod;
 
 class Generator
 {
-    public function generate(Event $event, CarbonPeriod $boundaries): Event
+    public function generate(Event $event, CarbonPeriod $boundaries): array
     {
+        $occurrences    = [];
         $realBoundaries = $this->findBoundaries(
             $event->startsAt() !== null ? Carbon::parse($event->startsAt()) : null,
-            $event->endsAt() !== null ? Carbon::parse($event->endsAt()) : null,
+            ($event->endsAt() !== null) ? Carbon::parse($event->endsAt()) : null,
             $boundaries
         );
 
@@ -34,10 +35,10 @@ class Generator
                 $start = $start->hours((int) $hours)->minutes((int) $minutes);
             }
 
-            $event->addOccurrence($start, $start->clone()->addSeconds($event->duration()));
+            $occurrences[] = ['starts_at' => $start->toDateTimeString(), 'ends_at' => $start->clone()->addSeconds($event->duration())->toDateTimeString()];
         }
 
-        return $event;
+        return $occurrences;
     }
 
     protected function findBoundaries(?CarbonInterface $start, ?CarbonInterface $end, CarbonPeriod $boundaries): CarbonPeriod

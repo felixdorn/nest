@@ -10,13 +10,11 @@ dataset('invalidCode', [
     ['something random', 'Syntax error, unexpected something'],
     ['everyday for an hour at 4 until 2030/30/30', 'Invalid date: 2030/30/30'],
     /*
-     * TODO: the semantic analyzer does not have access to the real value of the date
-     * and the logic of the semantic analyzer should probably be moved to the parser.
-     *
-     * Implementing a symbol table could also help.
+     * TODO: should show the real value
      */
-    ['30/30/30', 'Invalid date: 2030-30-30'],
+    ['30/30/30', 'Syntax error, unexpected 2030-30-30'],
     ['every wolf', 'Invalid date: wolf'],
+//    ['at 6 15/04/2005', 'Syntax error, unexpected 2005-04-15']
 ]);
 
 it('throws an error', function (string $code, string $exceptionMessage) {
@@ -26,7 +24,6 @@ it('throws an error', function (string $code, string $exceptionMessage) {
             Carbon::now(),
             Carbon::now()->addWeek()
         ), Carbon::now());
-
     } catch (CompileErrorException $e) {
         expect($e->getMessage())->toBe($exceptionMessage);
 

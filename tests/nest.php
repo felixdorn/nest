@@ -10,7 +10,7 @@ use Felix\Nest\Nest;
 //        ['starts']
 //    ]],
 dataset('input', [
-    ['"something" every weekend for an hour at 5', [
+    ['every weekend for an hour at 5', [
         [
             'starts_at' => '2021-01-02 05:00:00',
             'ends_at'   => '2021-01-02 06:00:00',
@@ -42,13 +42,13 @@ dataset('input', [
             'ends_at'   => '2005-04-22 23:00:00',
         ],
     ], '2005-04-15 00:00:00'],
-    ['"something" once 1/1/2021 from 15:00 to 16:00', [
+    ['once 1/1/2021 from 15:00 to 16:00', [
         [
             'starts_at' => '2021-01-01 15:00:00',
             'ends_at'   => '2021-01-01 16:00:00',
         ],
     ]],
-    ['"something else" in an hour for 30 minutes', [
+    ['in an hour for 30 minutes', [
         [
             'starts_at' => '2021-01-01 01:00:00',
             'ends_at'   => '2021-01-01 01:30:00',
@@ -61,7 +61,7 @@ it('works', function ($code, array $expectedOutput, ?string $now = null) {
 
     $now = Carbon::now();
 
-    $event = Nest::compile(
+    $occurrences = Nest::compile(
         $code,
         CarbonPeriod::create(
             $now,
@@ -70,5 +70,5 @@ it('works', function ($code, array $expectedOutput, ?string $now = null) {
         $now
     );
 
-    expect($event->occurrences())->toBe($expectedOutput);
+    expect($occurrences)->toBe($expectedOutput);
 })->with('input');

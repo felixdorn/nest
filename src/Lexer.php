@@ -19,19 +19,10 @@ class Lexer
         $event  = new Event();
 
         while (!$walker->eof()) {
-            if ($walker->current() === '"') {
-                // Skipping the starting quote
-                $walker->next();
-                $event->setLabel($walker->takeUntil('"'));
-                // Skipping the closing quote
-                $walker->next();
-                continue;
-            }
-
             $keyword = $walker->takeUntil(' ');
 
-            // Implicit once keyword
-            if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $keyword)) {
+            // Implicit once keyword, checks if this is the first keyword and a valid date
+            if ($walker->cursor === strlen($keyword) + 1 && preg_match('/^\d{4}-\d{2}-\d{2}$/', $keyword)) {
                 $event->addWhen($keyword);
                 continue;
             }

@@ -11,37 +11,32 @@ Nest is a simple pseudo-programming language for defining repeatable and non-rep
 Here are a couple examples of the syntax:
 
 ```
-"brush my teeth" everyday at 7:00 for 3 minutes
+everyday at 7:00 for 3 minutes
 ```
 
 ```
-"dentist and chill" tomorrow at 17:30 for an hour
+tomorrow at 17:30 for an hour
 ```
 
 ```
-"workout" every monday, saturday and sunday at 2 for 1h until 15/6/2021
+every monday, saturday and sunday at 2 for 1h until 15/6/2021
 ```
 
-Nest outputs a list of time periods with their labels.
+Nest outputs a list of time periods.
 
-Here's an example output for `"something" once 1/1/2021 from 15:00 to 16:00`:
+Here's an example output for `once 1/1/2021 from 15:00 to 16:00`:
 
 ```php
 [
-    "label"       => "something",
-    "now"         => "2021-01-01 00:00:00",
-    "occurrences" => [
-        ["starts_at" => "2021-01-01 15:00:00", "ends_at" => "2021-01-01 16:00:00"]
-    ]
+    ["starts_at" => "2021-01-01 15:00:00", "ends_at" => "2021-01-01 16:00:00"]
 ]
 ```
 
 # Features
 
 * Natural syntax
-* Labeling
 * Error reporting
-* Fast (enough)
+* Fast
 
 Already know this stuff? [Jump to the API documentation](#api)
 
@@ -59,14 +54,12 @@ probably is).
 Once indicates that an event is repeated once at a given date.
 
 ```
-"birth" for a day once 15/04/2005
+for a day once 15/04/2005
 ```
 
 #### Implicit once
 
-You may omit the once keyword if you write it at the start of the program (or just after the label).
-
-`"birth" 15/04/2005` processed as `"birth" once 2005-04-15`
+You may omit the once keyword if you write it at the start of the program.
 
 `15/04/2005` processed as `once 2005-04-15`
 

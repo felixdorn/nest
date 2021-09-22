@@ -65,13 +65,9 @@ dataset('compilations', [
         'duration' => 2 * TimeUnit::MINUTE,
         'at'       => '21:30',
     ]],
-    ['"dentist appointment" 15/05/2005 for an hour', [
-        'label'    => 'dentist appointment',
+    ['15/05/2005 for an hour', [
         'when'     => ['2005-05-15'],
         'duration' => TimeUnit::HOUR,
-    ]],
-    ['"hello \"world\""', [
-        'label' => 'hello "world"',
     ]],
     ['in an hour', [
         'when' => ['2021-01-01'],
@@ -99,7 +95,6 @@ it('compiles', function (string $code, array $expectedEvent) {
     );
 
     expect($event->when())->toBe($expectedEvent['when'] ?? []);
-    expect($event->label())->toBe($expectedEvent['label'] ?? null);
     expect($event->startsAt()?->toDateString())->toBe($expectedEvent['starts_at'] ?? null);
     expect($event->endsAt()?->toDateString())->toBe($expectedEvent['ends_at'] ?? null);
     expect($event->at())->toBe($expectedEvent['at'] ?? null);

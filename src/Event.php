@@ -9,20 +9,11 @@ use Felix\Nest\Exceptions\CompileErrorException;
 
 class Event
 {
-    private string|null $label             = null;
-    private array $occurrences             = [];
     private CarbonInterface|null $startsAt = null;
     private CarbonInterface|null $endsAt   = null;
     private array $when                    = [];
     private string|null $at                = null;
     private int $duration                  = 0;
-
-    public function addOccurrence(CarbonInterface $startsAt, CarbonInterface $endsAt): self
-    {
-        $this->occurrences[] = ['starts_at' => $startsAt->toDateTimeString(), 'ends_at' => $endsAt->toDateTimeString()];
-
-        return $this;
-    }
 
     public function at(): ?string
     {
@@ -34,23 +25,6 @@ class Event
         $this->at = $time;
 
         return $this;
-    }
-
-    public function label(): ?string
-    {
-        return $this->label;
-    }
-
-    public function setLabel(string $label): self
-    {
-        $this->label = $label;
-
-        return $this;
-    }
-
-    public function occurrences(): array
-    {
-        return $this->occurrences;
     }
 
     public function duration(): int
