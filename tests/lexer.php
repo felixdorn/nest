@@ -6,9 +6,9 @@ use Felix\Nest\Preprocessor;
 use Felix\Nest\Support\TimeUnit;
 
 dataset('compilations', [
-//    ['for half an hour', [
-//        'duration' => TimeUnit::HOUR / 2,
-//    ]],
+    ['for half an hour', [
+        'duration' => TimeUnit::HOUR / 2,
+    ]],
     ['every monday from 12:15AM to 4PM', [
         'when'     => ['monday'],
         'at'       => '00:15',

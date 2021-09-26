@@ -29,6 +29,7 @@ dataset('processed', [
     ['everyday', 'every monday, tuesday, wednesday, thursday, friday, saturday, sunday'],
     ['a', '1'],
     ['an', '1'],
+    ['tomorrow for an hour', '2021-01-02 for 1 hour'],
 ]);
 
 beforeEach(function () {
@@ -36,5 +37,6 @@ beforeEach(function () {
 });
 
 it('processes', function (string $code, string $result) {
+    Carbon::setTestNow('2021-01-01 00:00:00');
     expect($this->preprocessor->preprocess($code, Carbon::now()))->toBe($result);
 })->with('processed');

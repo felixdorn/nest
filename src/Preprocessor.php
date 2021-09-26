@@ -86,7 +86,7 @@ class Preprocessor
                 continue;
             }
 
-            $elements[$k] = $this->expandShorthands($elements[$k]);
+            $elements[$k] = $this->expandShorthands($elements[$k], $current);
         }
 
         return implode(' ', $elements);
@@ -155,7 +155,7 @@ class Preprocessor
         return $hours . ':' . $minutes;
     }
 
-    protected function expandShorthands(string $element): string
+    protected function expandShorthands(string $element, CarbonInterface $now): string
     {
         if ($element === 'everyday') {
             return 'every monday, tuesday, wednesday, thursday, friday, saturday, sunday';
@@ -163,6 +163,10 @@ class Preprocessor
 
         if ($element === 'an' || $element === 'a') {
             return '1';
+        }
+
+        if ($element === 'tomorrow') {
+            return $now->clone()->addDay()->toDateString();
         }
 
         if ($element === 'weekend' || $element === 'week-end') {

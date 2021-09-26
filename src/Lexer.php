@@ -42,7 +42,9 @@ class Lexer
             if ($keyword === 'until') {
                 $ends = $walker->takeUntil(' ');
 
-                $event->setStartsAt($now);
+                if ($event->startsAt() === null) {
+                    $event->setStartsAt($now);
+                }
                 $event->setEndsAt($ends);
                 continue;
             }
@@ -66,8 +68,7 @@ class Lexer
                     array_keys(TimeUnit::NAMES)
                 ));
                 $unit = $walker->takeUntil(' ');
-
-                $event->setDuration((int) $measure * TimeUnit::convert($unit));
+                $event->setDuration($this->findDuration($measure, TimeUnit::convert($unit)));
                 continue;
             }
 
@@ -102,7 +103,7 @@ class Lexer
                     array_keys(TimeUnit::NAMES)
                 ));
                 $unit     = TimeUnit::convert($walker->takeUntil(' '));
-                $duration = (int) $measure * $unit;
+                $duration = $this->findDuration($measure, $unit);
                 $event->addWhen($now->clone()->addSeconds($duration)->toDateString());
                 if ($unit <= TimeUnit::HOUR) {
                     $event->setAt($now->clone()->addSeconds($duration)->toTimeString('minute'));
@@ -131,6 +132,16 @@ class Lexer
                 )
             )
         );
+    }
+
+    private function findDuration(string $measure, int $unit): int
+    {
+        $measure = (int) trim(str_replace('half', '', $measure, $count));
+        if ($count > 0) {
+            return $measure * $unit / ($count * 2);
+        }
+
+        return $measure * $unit;
     }
 
     protected function diffInSeconds(DateTimeInterface $start, DateTimeInterface $end): int
