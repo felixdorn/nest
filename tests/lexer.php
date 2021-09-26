@@ -79,6 +79,11 @@ dataset('compilations', [
     ['for 5 days', [
         'duration' => 5 * TimeUnit::DAY,
     ]],
+    ['tomorrow at 6', [
+        'when' => ['2021-01-02'],
+        'at'        => '06:00',
+        'duration'  => TimeUnit::HOUR,
+    ]],
 ]);
 
 beforeEach(function () {
@@ -98,5 +103,5 @@ it('compiles', function (string $code, array $expectedEvent) {
     expect($event->startsAt()?->toDateString())->toBe($expectedEvent['starts_at'] ?? null);
     expect($event->endsAt()?->toDateString())->toBe($expectedEvent['ends_at'] ?? null);
     expect($event->at())->toBe($expectedEvent['at'] ?? null);
-    expect($event->duration())->toBe($expectedEvent['duration'] ?? 0);
+    expect($event->duration())->toBe($expectedEvent['duration'] ?? TimeUnit::HOUR);
 })->with('compilations');

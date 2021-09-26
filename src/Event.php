@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Carbon\Exceptions\InvalidFormatException;
 use Felix\Nest\Exceptions\CompileErrorException;
+use Felix\Nest\Support\TimeUnit;
 
 class Event
 {
@@ -13,7 +14,7 @@ class Event
     private CarbonInterface|null $endsAt   = null;
     private array $when                    = [];
     private string|null $at                = null;
-    private int $duration                  = 0;
+    private int $duration                  = TimeUnit::HOUR;
 
     public function at(): ?string
     {
