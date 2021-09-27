@@ -30,6 +30,11 @@ dataset('processed', [
     ['a', '1'],
     ['an', '1'],
     ['tomorrow for an hour', '2021-01-02 for 1 hour'],
+    ['for 15s', 'for 15 second'],
+    ['for 10m', 'for 10 minute'],
+    ['for 1h', 'for 1 hour'],
+    ['for 2d', 'for 2 day'],
+    ['for 1w', 'for 1 week']
 ]);
 
 beforeEach(function () {

@@ -36,4 +36,16 @@ class TimeUnit
     {
         return self::NAMES[$unit] ?? throw new InvalidTimeUnitException('invalid time unit: ' . $unit);
     }
+
+    public static function expand(string $unit): string
+    {
+        return match ($unit) {
+            's'     => 'second',
+            'm'     => 'minute',
+            'h'     => 'hour',
+            'd'     => 'day',
+            'w'     => 'week',
+            default => throw new InvalidTimeUnitException('invalid time unit: ' . $unit)
+        };
+    }
 }

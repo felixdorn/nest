@@ -3,6 +3,7 @@
 namespace Felix\Nest;
 
 use Carbon\CarbonInterface;
+use Felix\Nest\Support\TimeUnit;
 
 class Preprocessor
 {
@@ -171,6 +172,13 @@ class Preprocessor
 
         if ($element === 'weekend' || $element === 'week-end') {
             return 'saturday and sunday';
+        }
+
+        if (preg_match('/(?<measure>[0-9]+)(?<unit>[a-zA-Z])/', $element, $matches)) {
+            $measure = $matches['measure'];
+            $unit    = $matches['unit'];
+
+            return sprintf('%s %s', $measure, TimeUnit::expand($unit));
         }
 
         return $this->numbers[$element] ?? $element;

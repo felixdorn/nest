@@ -80,10 +80,13 @@ dataset('compilations', [
         'duration' => 5 * TimeUnit::DAY,
     ]],
     ['tomorrow at 6', [
-        'when' => ['2021-01-02'],
-        'at'        => '06:00',
-        'duration'  => TimeUnit::HOUR,
+        'when'     => ['2021-01-02'],
+        'at'       => '06:00',
+        'duration' => TimeUnit::HOUR,
     ]],
+    ['for 3h', [
+        'duration' => 3 * TimeUnit::HOUR
+    ]]
 ]);
 
 beforeEach(function () {
