@@ -34,7 +34,7 @@ dataset('processed', [
     ['for 10m', 'for 10 minute'],
     ['for 1h', 'for 1 hour'],
     ['for 2d', 'for 2 day'],
-    ['for 1w', 'for 1 week']
+    ['for 1w', 'for 1 week'],
 ]);
 
 beforeEach(function () {

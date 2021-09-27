@@ -85,8 +85,8 @@ dataset('compilations', [
         'duration' => TimeUnit::HOUR,
     ]],
     ['for 3h', [
-        'duration' => 3 * TimeUnit::HOUR
-    ]]
+        'duration' => 3 * TimeUnit::HOUR,
+    ]],
 ]);
 
 beforeEach(function () {

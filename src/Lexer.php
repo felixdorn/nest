@@ -137,8 +137,9 @@ class Lexer
     private function findDuration(string $measure, int $unit): int
     {
         $measure = (int) trim(str_replace('half', '', $measure, $count));
+
         if ($count > 0) {
-            return $measure * $unit / ($count * 2);
+            return (int) ($measure * $unit / ($count * 2));
         }
 
         return $measure * $unit;
