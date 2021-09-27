@@ -28,7 +28,7 @@
             "Felix\\Nest\\Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true,
     "config": {
         "sort-packages": true,
